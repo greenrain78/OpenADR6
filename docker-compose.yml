@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: db
+    image: postgres
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      - LC_ALL=C.UTF-8
+      - TZ=Asia/Seoul
+      - POSTGRES_DB=phaethon
+      - POSTGRES_USER=phaethon
+      - POSTGRES_PASSWORD=phaethon
+    ports:
+      - "5432:5432"
+    networks:
+      - openadr
+
+
+  backend:
+    container_name: backend
+    build:
+      context: BackEnd
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./BackEnd:/project
+    environment:
+      TZ: Asia/Seoul
+    depends_on:
+      - db
+    networks:
+      - openadr
+    links:
+      - db:db
+
+
+networks:
+  openadr:
