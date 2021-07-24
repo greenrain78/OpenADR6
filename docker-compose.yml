@@ -14,9 +14,6 @@ services:
       - POSTGRES_PASSWORD=phaethon
     ports:
       - "5432:5432"
-    networks:
-      - openadr
-
 
   backend:
     container_name: backend
@@ -31,11 +28,3 @@ services:
       TZ: Asia/Seoul
     depends_on:
       - db
-    networks:
-      - openadr
-    links:
-      - db:db
-
-
-networks:
-  openadr:
