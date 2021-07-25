@@ -28,3 +28,19 @@ services:
       TZ: Asia/Seoul
     depends_on:
       - db
+
+  model:
+    container_name: model
+    build:
+      context: Model
+      dockerfile: Dockerfile
+    volumes:
+      - ./Model:/project
+#    tty : true
+    environment:
+      - TZ=Asia/Seoul
+    # 환경변수 설정 파일
+    env_file:
+      - model-variables.env
+    command:
+      - "docker_compose"
