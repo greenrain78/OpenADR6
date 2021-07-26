@@ -5,6 +5,7 @@ import unittest
 
 from time import sleep
 
+from Engine.TestEngine import TestEngine
 from setting_logger import py_log_settings
 
 # 로거 생성
@@ -52,12 +53,16 @@ if __name__ == '__main__':
     else:
         logger.info('test 코드 미실행')
 
+    # 객체 생성
+    testEngine = TestEngine()
+    testEngine.db_connect()
+
+
+
+
     # 임시로
     while True:
-        logger = logging.getLogger(__name__)
-
         logger.debug('프로그램 실행중')
-
         sleep(1)
 
 

@@ -8,8 +8,23 @@ train_time = {
 }
 siteId_list = ['ace', 'ncg', 'nci', 'ncp']  # 건물 추가시 수정
 
+using_db = "postgresql"
 
+mariaDB = {
+    "IP": "mariaDB",
+    "ID": "user",
+    "password": "1234",
+    "db": "openadr",
+    "port": 3306,
+}
 
+postgresql = {
+    "IP": "db",
+    "ID": "phaethon",
+    "password": "phaethon",
+    "db": "phaethon",
+    "port": 5432,
+}
 
 
 

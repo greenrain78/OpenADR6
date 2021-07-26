@@ -52,11 +52,19 @@ config = {
     "loggers": {
         "root": {
             "level": "INFO",
-            "handlers": ["warning_file", "rotation_file", "all_file"],
+            "handlers": ["console", "warning_file", "rotation_file", "all_file"],
         },
         "__main__": {
             "level": "DEBUG",
-            "handlers": ["console"],
+            "handlers": [],
+        },
+        "Controller": {
+            "level": "DEBUG",
+            "handlers": [],
+        },
+        "Engine": {
+            "level": "DEBUG",
+            "handlers": [],
         },
     },
 }
