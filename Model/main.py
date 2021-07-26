@@ -1,16 +1,14 @@
-import json
+# -*- encoding: utf-8 -*-
 import logging.config
 import os
 import unittest
 
 from time import sleep
 
-# 로그 생성
-with open('loggers.json') as f:
-    config = json.load(f)
-    print(config)
-    logging.config.dictConfig(config)
+from setting_logger import init_log_settings
 
+
+# 로거 생성
 logger = logging.getLogger(__name__)
 
 
@@ -36,11 +34,14 @@ def get_env_bool(env_name):
 
 # 메인 프로그램 시작
 if __name__ == '__main__':
-
     # 디버그를 사용
     if get_env_bool('IS_DEBUG'):
+        # 로그 설정
+        init_log_settings()
         logger.debug('this is a debug')
         print(f"running debug mode")
+
+
 
     # 테스트 코드 실행
     # 에러시 프로그램 종료
@@ -52,7 +53,8 @@ if __name__ == '__main__':
 
     # 임시로
     while True:
-        logger.debug('running')
+        logger.debug('running 실행중')
+        logger.info('running 실행중')
         sleep(1)
 
 
