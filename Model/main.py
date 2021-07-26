@@ -5,8 +5,7 @@ import unittest
 
 from time import sleep
 
-from setting_logger import init_log_settings
-
+from setting_logger import py_log_settings
 
 # 로거 생성
 logger = logging.getLogger(__name__)
@@ -37,24 +36,28 @@ if __name__ == '__main__':
     # 디버그를 사용
     if get_env_bool('IS_DEBUG'):
         # 로그 설정
-        init_log_settings()
-        logger.debug('this is a debug')
-        print(f"running debug mode")
-
-
+        py_log_settings.init(debug=True)
+        logger.info('로그 정상 동작')
+        print(f"디버그 true로 실행")
+    else:
+        py_log_settings.init(debug=False)
+        logger.info('로그 정상 동작')
+        print(f"디버그 false로 실행")
 
     # 테스트 코드 실행
     # 에러시 프로그램 종료
     if get_env_bool('IS_RUN_TEST'):
-        logger.info('test 실행')
+        logger.info('test 코드 실행')
         unittest.main()
     else:
-        logger.info('test 미실행')
+        logger.info('test 코드 미실행')
 
     # 임시로
     while True:
-        logger.debug('running 실행중')
-        logger.info('running 실행중')
+        logger = logging.getLogger(__name__)
+
+        logger.debug('프로그램 실행중')
+
         sleep(1)
 
 

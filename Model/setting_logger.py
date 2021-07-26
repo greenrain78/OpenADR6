@@ -1,12 +1,13 @@
 ﻿import json
 import logging.config
+from abc import abstractmethod, ABCMeta, ABC
 
 config = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
         "simple": {
-            "format": "%(asctime)s:%(name)s:%(lineno)s (%(levelname)s) %(message)s",
+            "format": "%(asctime)s:%(module)s:%(lineno)s (%(levelname)s) %(message)s",
             "datefmt": "%Y-%m-%d %H:%M:%S"
         },
         "complex": {
@@ -27,43 +28,64 @@ config = {
             "formatter": "complex",
             "level": "ERROR",
         },
-        "rotation_file": {
+        "all_file": {
             "class": "logging.handlers.TimedRotatingFileHandler",
             "level": "DEBUG",
             "formatter": "complex",
-            "filename":  "logs/rotation.log",
+            "filename": "logs/rotation/all.log",
+            "when": "midnight",
+            "backupCount": 30,
+            "interval": 1,
+            "encoding": "utf-8"
+        },
+        "rotation_file": {
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "level": "INFO",
+            "formatter": "complex",
+            "filename": "logs/server_info/info.log",
             "when": "midnight",
             "backupCount": 30,
             "interval": 1,
             "encoding": "utf-8"
         },
     },
-    "root": {
-        "level": "INFO",
-        "handlers": ["console", "warning_file", "rotation_file"],
+    "loggers": {
+        "root": {
+            "level": "INFO",
+            "handlers": ["warning_file", "rotation_file", "all_file"],
+        },
+        "__main__": {
+            "level": "DEBUG",
+            "handlers": ["console"],
+        },
     },
 }
 
 
-def init_log_settings(debug: bool = False):
-    """
-    로그 설정
-    """
-    # 로그 생성
-    open_log_settings_py(debug)
+class log_settings:
+    log_config = None
+
+    def initialize(self):
+        logging.config.dictConfig(self.log_config)
 
 
-def open_log_settings_py(debug: bool):
-    """
-    python 에서 로그 설정파일을 조작
-    """
-    # 디버그 모드시 로거 변경
-    if debug is True:
-        pass
-    else:
-        pass
+class py_log_settings(log_settings):
+    log_config = config
 
-    logging.config.dictConfig(config)
+    @classmethod
+    def init(cls, debug: bool):
+
+        # 디버그 모드시 로거 변경
+        if debug is True:
+            handlers = cls.log_config.get("handlers")
+            console_handler = handlers.get("console")
+            console_handler["level"] = "DEBUG"
+        else:
+            handlers = cls.log_config.get("handlers")
+            console_handler = handlers.get("console")
+            console_handler["level"] = "INFO"
+
+        cls.initialize(cls)
 
 
 def open_log_setting_json():
