@@ -46,18 +46,23 @@ if __name__ == '__main__':
         logger.info('로그 정상 동작')
         print(f"디버그 false로 실행")
 
-    # 테스트 코드 실행
+    # # 테스트 코드 실행
     # 에러시 프로그램 종료
     if get_env_bool('IS_RUN_TEST'):
         logger.info('test 코드 실행')
-        unittest.main()
+        # 테스트 코드 탐색
+        loader = unittest.TestLoader()
+        tests = loader.discover('.')
+        # 테스트 실행
+        testRunner = unittest.runner.TextTestRunner()
+        testRunner.run(tests)
     else:
         logger.info('test 코드 미실행')
 
-    start = time.time()  # 시작 시간 저장
+    # start = time.time()  # 시작 시간 저장
 
     # 객체 생성
-    testEngine = TestEngine()
+    # testEngine = TestEngine()
     # testEngine.db_connect()
     # testEngine.api_connect_eqps()
     # testEngine.db_insert()
@@ -67,26 +72,9 @@ if __name__ == '__main__':
     # testEngine.api_controller_elec()
 
     # 작업 코드
-    testEngine.db_insert_elec()
-    print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
+    # testEngine.db_insert_elec()
+    # print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
     # 임시로
     while True:
         logger.debug('프로그램 실행중')
         sleep(1)
-
-
-class TestStringMethods(unittest.TestCase):
-
-    def test_upper(self):
-        self.assertEqual('foo'.upper(), 'FOO')
-
-    def test_isupper(self):
-        self.assertTrue('FOO'.isupper())
-        self.assertFalse('Foo'.isupper())
-
-    def test_split(self):
-        s = 'hello world'
-        self.assertEqual(s.split(), ['hello', 'world'])
-        # check that s.split fails when the separator is not a string
-        with self.assertRaises(TypeError):
-            s.split(2)
