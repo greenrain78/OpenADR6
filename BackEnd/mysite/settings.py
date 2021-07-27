@@ -81,9 +81,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'phaethon',
-        'USER': 'phaethon',
-        'PASSWORD': 'phaethon',
+        'NAME': 'openadr',
+        'USER': 'user',
+        'PASSWORD': '1234',
         'HOST': 'db',
         'PORT': 5432,
     }

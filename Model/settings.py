@@ -20,16 +20,15 @@ mariaDB = {
 
 postgresql = {
     "IP": "db",
-    "ID": "phaethon",
-    "password": "phaethon",
-    "db": "phaethon",
+    "ID": "user",
+    "password": "1234",
+    "db": "openadr",
     "port": 5432,
 }
 
+db_table_name_elec = {
+    "name": "app_collect_equipments_info",
+    "raw_column": ["siteID", 'eqpCode', 'eqpName', 'eqpType', 'perfId'],
+    "column": ["site_id", "perf_id", "eqp_code", "eqp_name", "eqp_type", "created_at"]
 
-
-
-
-
-
-
+}

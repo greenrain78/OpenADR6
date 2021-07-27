@@ -55,10 +55,12 @@ if __name__ == '__main__':
 
     # 객체 생성
     testEngine = TestEngine()
-    testEngine.db_connect()
-
-
-
+    # testEngine.db_connect()
+    # testEngine.api_connect()
+    # testEngine.db_insert()
+    # testEngine.db_select()
+    # testEngine.db_insert_controller()
+    testEngine.db_fetch_insert()
 
     # 임시로
     while True:

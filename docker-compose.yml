@@ -9,9 +9,9 @@ services:
     environment:
       - LC_ALL=C.UTF-8
       - TZ=Asia/Seoul
-      - POSTGRES_DB=phaethon
-      - POSTGRES_USER=phaethon
-      - POSTGRES_PASSWORD=phaethon
+      - POSTGRES_DB=openadr
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=1234
     ports:
       - "5432:5432"
 

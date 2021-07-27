@@ -21,7 +21,7 @@ class DB_Connecter:
         """
         if db_name == "mariaDB":
             # maria db 연결
-            self.db = pymysql.connect(
+            self.conn = pymysql.connect(
                 host=mariaDB['IP'],
                 dbname=mariaDB["db"],
                 user=mariaDB['ID'],
@@ -30,7 +30,7 @@ class DB_Connecter:
             )
         elif db_name == "postgresql":
             # postgres sql 연결
-            self.db = psycopg2.connect(
+            self.conn = psycopg2.connect(
                 host=postgresql['IP'],
                 dbname=postgresql["db"],
                 user=postgresql['ID'],
@@ -41,16 +41,43 @@ class DB_Connecter:
             # 예외 발생
             log.error(f"DB가 잘못 입력되었습니다. {db_name}")
             raise ValueError
-        self.cursor = self.db.cursor()
+        self.cursor = self.conn.cursor()
 
     def __del__(self):
-        self.db.close()
+        self.conn.close()
         self.cursor.close()
 
     def execute(self, query, args={}):
+        """
+        sql 문을 실행
+        insert나 update 같은 sql 문을 사용
+        """
+        self.cursor.execute(query, args)
+        log.debug(query)
+
+    def execute_fetch(self, query, args={}):
+        """
+        sql 문을 실행
+        select 같은 sql문을 사용하여 데이터를 가져온다.
+        :return: data
+        """
         self.cursor.execute(query, args)
         row = self.cursor.fetchall()
         return row
 
+    def fetch_all(self):
+        """
+        execute 를 사용전에 이걸 먼저 사용하면 오류 발생 함
+        :return:
+        """
+        try:
+            row = self.cursor.fetchall()
+            return row
+        except Exception as e:
+            log.error(f"sql문 실행중 오류 발생: {e}")
+
     def commit(self):
-        self.cursor.commit()
+        """
+        DB에 실제 반영
+        """
+        self.conn.commit()
