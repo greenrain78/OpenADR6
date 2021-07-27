@@ -4,7 +4,7 @@
 # DB data 프로그램
 data
 
-Model/logs/rotation
-Model/logs/server_info
-Model/logs/error.log
+Model/src/logs/rotation
+Model/src/logs/server_info
+Model/src/logs/error.log
 

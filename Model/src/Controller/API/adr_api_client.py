@@ -1,9 +1,13 @@
 """
 실질적으로 api를 요청해서 데이터를 가져오는 객체
 """
-
+import logging
 from typing import Optional
 import requests
+
+
+# 로거 생성
+logger = logging.getLogger(__name__)
 
 
 class ADR_API_Client:
@@ -65,6 +69,7 @@ class ADR_API_Client:
         url = f'{self.api_url}/ems/elec/{siteId}/{perfId}/{ymd}'
         response = requests.get(url, headers=self.header_data)
         json_resp = response.json()
-        print(url, flush=True)
-        print(response, flush=True)
-        return json_resp.get("data", [])
+        data = json_resp.get("data", [])
+        elecs = data.get("elecs")
+        logger.debug(f"{response} - url: {url}")
+        return elecs

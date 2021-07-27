@@ -1,12 +1,13 @@
 # -*- encoding: utf-8 -*-
 import logging.config
 import os
+import time
 import unittest
 
 from time import sleep
 
-from Engine.TestEngine import TestEngine
-from setting_logger import py_log_settings
+from src.Engine.TestEngine import TestEngine
+from src.setting_logger import py_log_settings
 
 # 로거 생성
 logger = logging.getLogger(__name__)
@@ -53,15 +54,21 @@ if __name__ == '__main__':
     else:
         logger.info('test 코드 미실행')
 
+    start = time.time()  # 시작 시간 저장
+
     # 객체 생성
     testEngine = TestEngine()
     # testEngine.db_connect()
-    # testEngine.api_connect()
+    # testEngine.api_connect_eqps()
     # testEngine.db_insert()
     # testEngine.db_select()
     # testEngine.db_insert_controller()
-    testEngine.db_fetch_insert()
+    # testEngine.db_fetch_insert()
+    # testEngine.api_controller_elec()
 
+    # 작업 코드
+    testEngine.db_insert_elec()
+    print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
     # 임시로
     while True:
         logger.debug('프로그램 실행중')
