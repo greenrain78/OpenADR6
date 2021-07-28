@@ -65,6 +65,25 @@ class DB_Connecter:
         row = self.cursor.fetchall()
         return row
 
+    def execute_fetch_dict(self, query, args={}):
+        """
+        sql 문을 실행
+        select 같은 sql문을 사용하여 데이터를 가져온다.
+        사전 형식으로 출력
+        :return: data
+        """
+        self.cursor.execute(query, args)
+        columns = list(self.cursor.description)
+        result = self.cursor.fetchall()
+        results = []
+        for row in result:
+            row_dict = {}
+            for i, col in enumerate(columns):
+                row_dict[col.name] = row[i]
+            results.append(row_dict)
+
+        return results
+
     def fetch_all(self):
         """
         execute 를 사용전에 이걸 먼저 사용하면 오류 발생 함

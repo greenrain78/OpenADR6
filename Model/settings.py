@@ -25,14 +25,13 @@ postgresql = {
     "db": "openadr",
     "port": 5432,
 }
-
-db_table_name_elec = {
+db_table_name_eqps = {
     "name": "app_collect_equipments_info",
     "raw_column": ["siteID", 'perfId', 'eqpCode', 'eqpName', 'eqpType'],
     "column": ["site_id", "perf_id", "eqp_code", "eqp_name", "eqp_type", "created_at"]
 
 }
-db_table_name_eqps = {
+db_table_name_elec = {
     "name": "app_collect_power_info",
     "raw_column": ['perfId', 'pnName', 'eqpName', 'ymdms', 'volTage', 'amPere', 'arPower', 'atvPower',
                    'ratPower', 'pwFactor', 'accruePower', 'voltagerS', 'voltagesT', 'voltagetR', 'temperature'],

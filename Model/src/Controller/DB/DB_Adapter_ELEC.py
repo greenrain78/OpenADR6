@@ -23,23 +23,34 @@ class DBAdapterELEC:
         비정상 = false
         """
         table_raw_column = self.table['raw_column']
+        for element in table_raw_column:
+            if element not in data:
+                log.error(f"입력할 데이터가 잘못되었습니다. {element}:{data}")
+                return False
 
+        return True
         # 키값이 모두 있는지 검사
-        if all(element in data for element in table_raw_column):
-            return True
-        else:
-            log.error(f"입력할 데이터가 잘못되었습니다. {data}")
-            return False
+        # if all(element in data for element in table_raw_column):
+        #     return True
+        # else:
+        #     log.error(f"입력할 데이터가 잘못되었습니다. {data}")
+        #     return False
 
-    def insert_run(self, site_id, perf_id, eqp_code, eqp_name, eqp_type):
+    def insert_run(self, site_id, perf_id, pn_name, eqp_name, ymdms, vol_tage, am_pere,
+                   ar_power, atv_power, rat_power, pw_factor, accrue_power, voltager_s,
+                   voltages_t, voltaget_r, temperature):
         """
         실제 insert문을 동작시키는 함수
         """
         table_name = self.table['name']
         sql = f"INSERT INTO {table_name} " \
-              f"(site_id, perf_id, eqp_code, eqp_name, eqp_type, created_at) " \
+              f"(site_id, perf_id, pn_name, eqp_name, ymdms, vol_tage, am_pere, " \
+              f"ar_power, atv_power, rat_power, pw_factor, accrue_power, voltager_s," \
+              f" voltages_t, voltaget_r, temperature, created_at) " \
               f"VALUES (" \
-              f"'{site_id}', '{perf_id}', '{eqp_code}', '{eqp_name}', '{eqp_type}', " \
+              f"'{site_id}', '{perf_id}', '{pn_name}', '{eqp_name}', '{ymdms}', '{vol_tage}', '{am_pere}', " \
+              f"'{ar_power}', '{atv_power}', '{rat_power}', '{pw_factor}', '{accrue_power}', '{voltager_s}', " \
+              f"'{voltages_t}', '{voltaget_r}', '{temperature}', " \
               f"current_timestamp)"
         self.db.execute(sql)
 
@@ -52,11 +63,11 @@ class DBAdapterELEC:
         # 키값이 모두 있는지 검사
         if self.check_data(data):
             self.insert_run(
-                site_id=data['siteID'],
-                perf_id=data['perfId'],
-                eqp_code=data['eqpCode'],
-                eqp_name=data['eqpName'],
-                eqp_type=data['eqpType']
+                site_id=data['siteID'], perf_id=data['perfId'], pn_name=data['pnName'], eqp_name=data['eqpName'],
+                ymdms=data['ymdms'], vol_tage=data['volTage'], am_pere=data['amPere'], ar_power=data['arPower'],
+                atv_power=data['atvPower'], rat_power=data['ratPower'], pw_factor=data['pwFactor'],
+                accrue_power=data['accruePower'], voltager_s=data['voltagerS'], voltages_t=data['voltagesT'],
+                voltaget_r=data['voltagetR'], temperature=data['temperature']
             )
             self.db.commit()
             log.debug(f"insert elec : {data}")
@@ -73,15 +84,15 @@ class DBAdapterELEC:
         :return:
         """
         for data in data_list:
-            # siteID 추가
+            # # siteID 추가
             data['siteID'] = siteID
             if self.check_data(data):
                 self.insert_run(
-                    site_id=data['siteID'],
-                    perf_id=data['perfId'],
-                    eqp_code=data['eqpCode'],
-                    eqp_name=data['eqpName'],
-                    eqp_type=data['eqpType']
+                    site_id=data['siteID'], perf_id=data['perfId'], pn_name=data['pnName'], eqp_name=data['eqpName'],
+                    ymdms=data['ymdms'], vol_tage=data['volTage'], am_pere=data['amPere'], ar_power=data['arPower'],
+                    atv_power=data['atvPower'], rat_power=data['ratPower'], pw_factor=data['pwFactor'],
+                    accrue_power=data['accruePower'], voltager_s=data['voltagerS'], voltages_t=data['voltagesT'],
+                    voltaget_r=data['voltagetR'], temperature=data['temperature']
                 )
             else:
                 log.error(f"입력할 데이터가 잘못되었습니다. {data}")
@@ -96,3 +107,9 @@ class DBAdapterELEC:
 
     def delete(self):
         pass
+
+    def read_all(self):
+        table_name = self.table['name']
+        sql = f"SELECT * from {table_name}"
+        data = self.db.execute_fetch_dict(sql)
+        return data

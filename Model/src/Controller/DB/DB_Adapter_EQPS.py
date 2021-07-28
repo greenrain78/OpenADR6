@@ -11,9 +11,11 @@ class DBAdapterEQPS:
     해당 데이터를 다루는 모든 조작을 담당
     """
 
+
     def __init__(self, db):
         self.db = db
         self.table = db_table_name_eqps
+
 
     def check_data(self, data: dict) -> bool:
         """
@@ -31,24 +33,19 @@ class DBAdapterEQPS:
             log.error(f"입력할 데이터가 잘못되었습니다. {data}")
             return False
 
-    def insert_run(self, site_id, perf_id, pn_name, eqp_name, ymdms, vol_tage, am_pere,
-                   ar_power, atv_power, rat_power, pw_factor, accrue_power, voltager_s,
-                   voltages_t, voltaget_r, temperature):
+
+    def insert_run(self, site_id, perf_id, eqp_code, eqp_name, eqp_type):
         """
         실제 insert문을 동작시키는 함수
         """
         table_name = self.table['name']
         sql = f"INSERT INTO {table_name} " \
-              f"(site_id, perf_id, pn_name, eqp_name, ymdms, vol_tage, am_pere, " \
-              f"ar_power, atv_power, rat_power, pw_factor, accrue_power, voltager_s," \
-              f" voltages_t, voltaget_r, temperature, created_at) " \
+              f"(site_id, perf_id, eqp_code, eqp_name, eqp_type, created_at) " \
               f"VALUES (" \
-              f"'{site_id}', '{perf_id}', '{pn_name}', '{eqp_name}', '{ymdms}', '{vol_tage}', '{am_pere}', " \
-              f"'{ar_power}', '{atv_power}', '{rat_power}', '{pw_factor}', '{accrue_power}', '{voltager_s}', " \
-              f"'{voltages_t}', '{voltaget_r}', '{temperature}', " \
+              f"'{site_id}', '{perf_id}', '{eqp_code}', '{eqp_name}', '{eqp_type}', " \
               f"current_timestamp)"
-        print(sql)
         self.db.execute(sql)
+
 
     def insert(self, data: dict) -> bool:
         """
@@ -59,11 +56,11 @@ class DBAdapterEQPS:
         # 키값이 모두 있는지 검사
         if self.check_data(data):
             self.insert_run(
-                site_id=data['siteID'], perf_id=data['perfId'], pn_name=data['pnName'], eqp_name=data['eqpName'],
-                ymdms=data['ymdms'], vol_tage=data['volTage'], am_pere=data['amPere'], ar_power=data['arPower'],
-                atv_power=data['atvPower'], rat_power=data['ratPower'], pw_factor=data['pwFactor'],
-                accrue_power=data['accruePower'], voltager_s=data['voltagerS'], voltages_t=data['voltagesT'],
-                voltaget_r=data['voltagetR'], temperature=data['temperature']
+                site_id=data['siteID'],
+                perf_id=data['perfId'],
+                eqp_code=data['eqpCode'],
+                eqp_name=data['eqpName'],
+                eqp_type=data['eqpType']
             )
             self.db.commit()
             log.debug(f"insert elec : {data}")
@@ -71,6 +68,7 @@ class DBAdapterEQPS:
         else:
             log.error(f"입력할 데이터가 잘못되었습니다. {data}")
             return False
+
 
     def insert_list(self, data_list, siteID):
         """
@@ -80,26 +78,36 @@ class DBAdapterEQPS:
         :return:
         """
         for data in data_list:
-            # # siteID 추가
+            # siteID 추가
             data['siteID'] = siteID
             if self.check_data(data):
                 self.insert_run(
-                    site_id=data['siteID'], perf_id=data['perfId'], pn_name=data['pnName'], eqp_name=data['eqpName'],
-                    ymdms=data['ymdms'], vol_tage=data['volTage'], am_pere=data['amPere'], ar_power=data['arPower'],
-                    atv_power=data['atvPower'], rat_power=data['ratPower'], pw_factor=data['pwFactor'],
-                    accrue_power=data['accruePower'], voltager_s=data['voltagerS'], voltages_t=data['voltagesT'],
-                    voltaget_r=data['voltagetR'], temperature=data['temperature']
+                    site_id=data['siteID'],
+                    perf_id=data['perfId'],
+                    eqp_code=data['eqpCode'],
+                    eqp_name=data['eqpName'],
+                    eqp_type=data['eqpType']
                 )
             else:
                 log.error(f"입력할 데이터가 잘못되었습니다. {data}")
         # db에 반영
         self.db.commit()
 
+
+    def read_all(self):
+        table_name = self.table['name']
+        sql = f"SELECT * from {table_name}"
+        data = self.db.execute_fetch_dict(sql)
+        return data
+
+
     def read(self):
         pass
 
+
     def update(self):
         pass
+
 
     def delete(self):
         pass
