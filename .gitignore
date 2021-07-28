@@ -8,3 +8,4 @@ Model/src/logs/rotation
 Model/src/logs/server_info
 Model/src/logs/error.log
 
+model-variables.env
