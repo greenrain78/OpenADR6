@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
 import logging.config
 import os
-import time
 import unittest
 
 from time import sleep
 
-from src.Engine.TestEngine import TestEngine
+from src.Engine.Planner import schedule_registration
+from src.Controller.Schedule.schedule_manager import MainScheduler
 from src.setting_logger import py_log_settings
 
 # 로거 생성
@@ -63,16 +63,13 @@ if __name__ == '__main__':
 
     # 객체 생성
     # testEngine = TestEngine()
-    # testEngine.db_connect()
-    # testEngine.api_connect_eqps()
-    # testEngine.db_insert()
-    # testEngine.db_select()
-    # testEngine.db_insert_controller()
-    # testEngine.db_fetch_insert()
-    # testEngine.api_controller_elec()
+    scheduler = MainScheduler()
+
+    # 일정 등록
+    schedule_registration(scheduler)
+
 
     # 작업 코드
-    # testEngine.db_insert_elec()
     # print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
     # 임시로
     while True:

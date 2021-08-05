@@ -4,8 +4,8 @@
 # DB data 프로그램
 data
 
-Model/src/logs/rotation
-Model/src/logs/server_info
-Model/src/logs/error.log
+Model/logs/rotation
+Model/logs/server_info
+Model/logs/error.log
 
-model-variables.env
+Model/model-variables.env

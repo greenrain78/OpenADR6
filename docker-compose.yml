@@ -41,4 +41,4 @@ services:
       - TZ=Asia/Seoul
     # 환경변수 설정 파일
     env_file:
-      - model-variables.env
+      - Model/model-variables.env

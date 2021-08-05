@@ -9,10 +9,11 @@ class MainEngine:
         self.adr_api = ADR_API_Client()
         self.db = DBAdapter()
 
-
     def get_recent_date(self):
         pass
 
+    def ann_run_test(self):
+        pass
 
 
 

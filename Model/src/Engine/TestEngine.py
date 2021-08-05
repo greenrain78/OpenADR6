@@ -24,8 +24,6 @@ class TestEngine:
         self.db.eqps.insert_list(data_list, 'ace')
         # print(f"TEST ENGINE db_insert_elec: {data_list}")
 
-
-
     def hello(self):
         """
         간단 engine 동작 확인
