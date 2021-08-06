@@ -90,7 +90,14 @@ services:
       - ./Model:/project
 #    tty : true
     environment:
-      - TZ=Asia/Seoul
+      TZ: Asia/Seoul
+      ADR_DB: openadr
+      ADR_USER: user
+      ADR_PASSWORD: 1234
+      ADR_HOST: db
+      ADR_PORT: 5432 # 외부 노출 포트 말고 내부 포트를 기입
+      TEST_HOST: db_test
+      TEST_PORT: 5432
     # 환경변수 설정 파일
     env_file:
       - Model/model-variables.env
