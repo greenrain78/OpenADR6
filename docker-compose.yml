@@ -29,6 +29,21 @@ services:
     depends_on:
       - db
 
+  frontend:
+    container_name: frontend
+    build:
+      context: FrontEnd
+      dockerfile: Dockerfile
+    volumes:
+      - ./FrontEnd:/app
+      - /app/node_modules # 도커 컨테이너에서만 존재?
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=development
+    stdin_open: true
+    tty: true
+
   model:
     container_name: model
     build:
