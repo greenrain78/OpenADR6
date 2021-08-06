@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   db:
-    container_name: db
+    container_name: adr_db
     image: postgres
     volumes:
       - ./data:/var/lib/postgresql/data
@@ -13,24 +13,46 @@ services:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=1234
     ports:
-      - "5432:5432"
+      - "10100:5432"
+
+  db_test:
+    container_name: adr_db_test
+    image: postgres
+    volumes:
+      - ./data_test:/var/lib/postgresql/data
+    environment:
+      - LC_ALL=C.UTF-8
+      - TZ=Asia/Seoul
+      - POSTGRES_DB=openadr
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=1234
+    ports:
+      - "10110:5432"
 
   backend:
-    container_name: backend
+    container_name: adr_back
     build:
       context: BackEnd
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "10200:8000"
     volumes:
       - ./BackEnd:/project
     environment:
       TZ: Asia/Seoul
+      ADR_DB: openadr
+      ADR_USER: user
+      ADR_PASSWORD: 1234
+      ADR_HOST: db
+      ADR_PORT: 5432 # 외부 노출 포트 말고 내부 포트를 기입
+      TEST_HOST: db_test
+      TEST_PORT: 5432
     depends_on:
       - db
+      - db_test
 
   frontend:
-    container_name: frontend
+    container_name: adr_front
     build:
       context: FrontEnd
       dockerfile: Dockerfile
@@ -38,14 +60,29 @@ services:
       - ./FrontEnd:/app
       - /app/node_modules # 도커 컨테이너에서만 존재?
     ports:
-      - "3001:3000"
+      - "10300:3000"
+    environment:
+      - NODE_ENV=development
+    stdin_open: true
+    tty: true
+
+  frontend-dev:
+    container_name: adr_front_dev
+    build:
+      context: FrontEnd
+      dockerfile: Dockerfile
+    volumes:
+      - ./FrontEnd:/app
+      - /app/node_modules # 도커 컨테이너에서만 존재?
+    ports:
+      - "10310:3000"
     environment:
       - NODE_ENV=development
     stdin_open: true
     tty: true
 
   model:
-    container_name: model
+    container_name: adr_model
     build:
       context: Model
       dockerfile: Dockerfile

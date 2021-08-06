@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -88,11 +88,19 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'openadr',
-        'USER': 'user',
-        'PASSWORD': '1234',
-        'HOST': 'db',
-        'PORT': 5432,
+        'NAME': os.environ.get('ADR_DB', 'openadr'),
+        'USER': os.environ.get('ADR_USER', 'user'),
+        'PASSWORD': os.environ.get('ADR_PASSWORD', '1234'),
+        'HOST': os.environ.get('ADR_HOST', 'db'),
+        'PORT': os.environ.get('ADR_PORT', '7777'),
+    },
+    'test': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('ADR_DB', 'openadr'),
+        'USER': os.environ.get('ADR_USER', 'user'),
+        'PASSWORD': os.environ.get('ADR_PASSWORD', '1234'),
+        'HOST': os.environ.get('TEST_HOST', 'db_test'),
+        'PORT': os.environ.get('TEST_PORT', '5432'),
     }
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',

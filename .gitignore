@@ -3,6 +3,7 @@
 
 # DB data 프로그램
 data
+data_test
 
 Model/logs/rotation
 Model/logs/server_info

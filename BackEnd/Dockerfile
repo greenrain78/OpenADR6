@@ -11,9 +11,7 @@ WORKDIR /project
 COPY . /project
 RUN pip install -r requirements.txt
 
-# model DB 반영
-# RUN python manage.py makemigrations
-# RUN python manage.py migrate
+ENTRYPOINT ["sh", "/project/entrypoint.sh"]
 
 # -u 옵션으로 버퍼없이 즉시 출력
 CMD ["python", "manage.py", "runserver", "0:8000"]
