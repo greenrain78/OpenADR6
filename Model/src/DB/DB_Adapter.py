@@ -37,13 +37,8 @@ class DBAdapter:
     """
 
     def __init__(self, debug=True):
-        # 임시로 IS_SQL_ECHO 환경변수를 가져와서 엔진 설정
-        echo = os.environ.get('IS_SQL_ECHO').lower() in 'true'
-        # 엔진 링크 생성
         db_link = create_db_link(debug)
-        # 엔진 생성
-        self.engine = create_engine(db_link, echo=echo)
-        # 세션 생성자 생성
+        self.engine = create_engine(db_link, echo=True)
         self.Session = sessionmaker(bind=self.engine)
 
     def insert_object(self, obj):

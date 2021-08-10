@@ -52,28 +52,19 @@ config = {
     "loggers": {
         "root": {
             "level": "INFO",
-            # 발견 못한 로그도 일단은 출력하도록 설정
-            "handlers": ["console", ],
+            "handlers": ["console", "warning_file", "rotation_file", "all_file"],
         },
         "__main__": {
             "level": "DEBUG",
-            "handlers": ["console", "warning_file", "rotation_file", "all_file", ],
-            "propagate": False,
+            "handlers": [],
         },
         "Controller": {
             "level": "DEBUG",
-            "handlers": ["console", "warning_file", "rotation_file", "all_file", ],
-            "propagate": False,
+            "handlers": [],
         },
         "Engine": {
             "level": "DEBUG",
-            "handlers": ["console", "warning_file", "rotation_file", "all_file", ],
-            "propagate": False,
-        },
-        "sqlalchemy": {
-            "level": "DEBUG",
-            "handlers": ["warning_file", "rotation_file", "all_file", ],
-            "propagate": False,
+            "handlers": [],
         },
     },
 }
@@ -91,33 +82,18 @@ class py_log_settings(log_settings):
 
     @classmethod
     def init(cls, debug: bool):
+
         # 디버그 모드시 로거 변경
         if debug is True:
-            cls.change_debug_mode(cls)
+            handlers = cls.log_config.get("handlers")
+            console_handler = handlers.get("console")
+            console_handler["level"] = "DEBUG"
         else:
-            cls.change_server_mode(cls)
+            handlers = cls.log_config.get("handlers")
+            console_handler = handlers.get("console")
+            console_handler["level"] = "INFO"
+
         cls.initialize(cls)
-
-    def change_debug_mode(self):
-        """
-        디버그 모드시 설정
-        """
-        print("log debug mode")
-        # 기본 콘솔 핸들러가 DEBUG 까지 출력되도록 설정
-        handlers = self.log_config.get("handlers")
-        console_handler = handlers.get("console")
-        console_handler["level"] = "DEBUG"
-
-    def change_server_mode(self):
-        """
-        서버 모드시 설정
-        디폴트 설정이긴 하나 재확인
-        """
-        print("log server mode")
-        # 기본 콘솔 핸들러가 INFO 까지 출력되도록 설정
-        handlers = self.log_config.get("handlers")
-        console_handler = handlers.get("console")
-        console_handler["level"] = "INFO"
 
 
 def open_log_setting_json():

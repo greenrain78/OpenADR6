@@ -13,7 +13,7 @@ from src.setting_logger import py_log_settings
 logger = logging.getLogger(__name__)
 
 
-def get_env_bool(env_name) -> bool:
+def get_env_bool(env_name):
     """
     :arg env_name 환경변수 명
     :return true or false
@@ -35,7 +35,6 @@ def get_env_bool(env_name) -> bool:
 
 # 메인 프로그램 시작
 if __name__ == '__main__':
-
     # 디버그를 사용
     if get_env_bool('IS_DEBUG'):
         # 로그 설정
