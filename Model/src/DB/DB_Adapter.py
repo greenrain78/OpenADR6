@@ -7,27 +7,26 @@ from logging import getLogger
 from sqlalchemy.engine.create import create_engine
 from sqlalchemy.orm.session import sessionmaker
 
+from settings import IS_SQL_ECHO, DATABASES
+
 log = getLogger(__name__)
 
 
-def create_db_link(debug):
+def create_db_engine(on_test: bool):
     """
-    :param debug:
+    :param on_test:
     :return: engine
     """
-    database = os.environ.get('ADR_DB', 'openadr')
-    user = os.environ.get('ADR_USER', 'user')
-    password = os.environ.get('ADR_PASSWORD', '1234')
-
-    if not debug:
-        host = os.environ.get('ADR_HOST', 'db')
-        port = os.environ.get('ADR_PORT', '5432')
+    if on_test:
+        # 테스트 실행시 테스트 DB 동작
+        db = DATABASES['test']
     else:
-        # 테스트 DB
-        host = os.environ.get('TEST_HOST', 'db_test')
-        port = os.environ.get('TEST_PORT', '5432')
-    db_link = f'postgresql://{user}:{password}@{host}:{port}/{database}'
-    return db_link
+        db = DATABASES['default']
+    db_link = f'postgresql://{db["user"]}:{db["password"]}' \
+              f'@{db["host"]}:{db["port"]}/{db["database"]}'
+    engine = create_engine(db_link, echo=IS_SQL_ECHO)
+    print(db_link)
+    return engine
 
 
 class DBAdapter:
@@ -36,10 +35,10 @@ class DBAdapter:
     해당 데이터를 다루는 모든 조작을 담당
     """
 
-    def __init__(self, debug=True):
-        db_link = create_db_link(debug)
-        self.engine = create_engine(db_link, echo=True)
-        self.Session = sessionmaker(bind=self.engine)
+    def __init__(self, on_test=False):
+        self.engine = create_db_engine(on_test=on_test)
+        self.session_maker = sessionmaker(bind=self.engine)
+        self.session = self.session_maker()
 
     def insert_object(self, obj):
         """
@@ -47,9 +46,9 @@ class DBAdapter:
         :param obj:
         :return:
         """
-        with self.Session() as session:
-            session.add(obj)
-            session.commit()
+
+        self.session.add(obj)
+        self.session.commit()
 
     def insert_list(self, obj_list: list):
         """
@@ -58,11 +57,36 @@ class DBAdapter:
         :return:
         """
 
-        with self.Session() as session:
-            session.add_all(obj_list)
-            session.commit()
+        self.session.add_all(obj_list)
+        self.session.commit()
+
+    def select_one(self, model):
+        result = self.session.query(model).first()
+        return result
+
+    def select_all(self, model):
+        result = self.session.query(model).all()
+        return result
+
+    def select_query(self, model):
+        result = self.session.query(model)
+        return result
+
+    def select_filter(self, model, filter_list: dict):
+        result = self.session.query(model).filter_by(**filter_list)
+        return result
+
+    def delete_obj(self, obj):
+        self.session.delete(obj)
 
     def clear_table_all(self, model):
-        with self.Session() as session:
-            session.query(model).delete()
-            session.commit()
+        self.session.query(model).delete()
+        self.session.commit()
+
+    def rollback(self):
+        # 업데이트 한 객체 모두 롤백
+        self.rollback()
+
+    def commit(self):
+        # 객체를 업데이트 후 반영
+        self.commit()

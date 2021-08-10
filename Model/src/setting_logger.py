@@ -50,21 +50,21 @@ config = {
         },
     },
     "loggers": {
-        "root": {
+        "": {
             "level": "INFO",
             "handlers": ["console", "warning_file", "rotation_file", "all_file"],
         },
         "__main__": {
             "level": "DEBUG",
-            "handlers": [],
+            "handlers": ["console", "warning_file", "rotation_file", "all_file"],
         },
-        "Controller": {
+        "src": {
             "level": "DEBUG",
-            "handlers": [],
+            "handlers": ["console", "warning_file", "rotation_file", "all_file"],
         },
-        "Engine": {
+        "test": {
             "level": "DEBUG",
-            "handlers": [],
+            "handlers": ["console", "warning_file", "rotation_file", "all_file"],
         },
     },
 }
