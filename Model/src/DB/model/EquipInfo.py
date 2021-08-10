@@ -30,4 +30,8 @@ class equipments_info(Base):
 
         self.created_at = datetime.now()
 
+    def __repr__(self):
+        return f"<equipments_info({self.id}, {self.site_id}, {self.perf_id}, " \
+               f"{self.eqp_code}, {self.eqp_name}, {self.eqp_type} " \
+               f"{self.created_at})>"
 

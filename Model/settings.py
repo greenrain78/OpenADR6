@@ -1,6 +1,6 @@
 import os
 
-IS_SQL_ECHO = True
+IS_SQL_ECHO = False
 predict_time = {
     "week": 1
 }

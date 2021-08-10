@@ -52,7 +52,7 @@ config = {
     "loggers": {
         "": {
             "level": "INFO",
-            "handlers": ["console", "warning_file", "rotation_file", "all_file"],
+            "handlers": [],
         },
         "__main__": {
             "level": "DEBUG",

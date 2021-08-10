@@ -25,7 +25,6 @@ def create_db_engine(on_test: bool):
     db_link = f'postgresql://{db["user"]}:{db["password"]}' \
               f'@{db["host"]}:{db["port"]}/{db["database"]}'
     engine = create_engine(db_link, echo=IS_SQL_ECHO)
-    print(db_link)
     return engine
 
 
@@ -89,4 +88,4 @@ class DBAdapter:
 
     def commit(self):
         # 객체를 업데이트 후 반영
-        self.commit()
+        self.session.commit()
