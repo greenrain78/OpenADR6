@@ -22,41 +22,49 @@ class DataEngineTest(unittest.TestCase):
     def tearDown(self):
         self.db.clear_table_all(equipments_info)
 
-    def test_recent_date_eqps(self):
-        """
-        update_eqps
-        데이터가 최신 데이터인지 확인
-        """
-        logger.info("test_recent_date_eqps")
-        self.data_engine.update_eqps()
-        # 장비 데이터 업데이트 확인
-        # 모든 사이트
-        for site_id in siteId_list:
-            # 장비 데이터 가져오기
-            data_list = self.api.fetch_eqps(site_id)
-            for data in data_list:
-                fetch_data = self.db.select_filter_one(equipments_info, site_id=site_id, perf_id=data['perfId'])
-                self.assertEqual(site_id, fetch_data.site_id)
-                self.assertEqual(int(data.get("perfId")), fetch_data.perf_id)
-                self.assertEqual(data.get("eqpCode"), fetch_data.eqp_code)
-                self.assertEqual(data.get("eqpName"), fetch_data.eqp_name)
-                self.assertEqual(data.get("eqpType"), fetch_data.eqp_type)
-
-    def test_update_eqps_warnning(self):
-        """
-        정상적으로 업데이트가 되는 지 확인
-        :return:
-        """
-        logger.info("test_update_eqps_warnning")
-        # 데이터 추가
-        self.data_engine.update_eqps()
-        fetch_data = self.db.select_one(equipments_info)
-
-        # 데이터 변경
-        print(fetch_data)
-        fetch_data.eqp_code = "test_warning"
-        self.db.commit()
-
-        # 업데이트
-        self.data_engine.update_eqps()
-        print(fetch_data)
+    # def test_recent_date_eqps(self):
+    #     """
+    #     update_eqps
+    #     데이터가 최신 데이터인지 확인
+    #     """
+    #     logger.info("test_recent_date_eqps")
+    #     self.data_engine.update_eqps()
+    #     # 장비 데이터 업데이트 확인
+    #     # 모든 사이트
+    #     for site_id in siteId_list:
+    #         # 장비 데이터 가져오기
+    #         data_list = self.api.fetch_eqps(site_id)
+    #         for data in data_list:
+    #             fetch_data = self.db.select_filter_one(equipments_info, site_id=site_id, perf_id=data['perfId'])
+    #             self.assertEqual(site_id, fetch_data.site_id)
+    #             self.assertEqual(int(data.get("perfId")), fetch_data.perf_id)
+    #             self.assertEqual(data.get("eqpCode"), fetch_data.eqp_code)
+    #             self.assertEqual(data.get("eqpName"), fetch_data.eqp_name)
+    #             self.assertEqual(data.get("eqpType"), fetch_data.eqp_type)
+    #
+    # def test_update_eqps_warnning(self):
+    #     """
+    #     정상적으로 업데이트가 되는 지 확인
+    #     :return:
+    #     """
+    #     logger.info("test_update_eqps_warnning")
+    #     # 데이터 추가
+    #     self.data_engine.update_eqps()
+    #     fetch_data = self.db.select_one(equipments_info)
+    #
+    #     # 데이터 변경
+    #     fetch_data.eqp_code = "test_warning"
+    #     self.db.commit()
+    #
+    #     # 업데이트
+    #     self.data_engine.update_eqps()
+    #
+    #     # 알림
+    #     logger.warning("위 로그는 test_update_eqps_warnning 테스트 로그 입니다.")
+    #
+    # def test_update_elec(self):
+    #     logger.info("test_update_elec")
+    #     # 장비 리스트 갱신
+    #     self.data_engine.update_eqps()
+    #     # 장비 정보 업데이트
+    #     self.data_engine.update_elec()

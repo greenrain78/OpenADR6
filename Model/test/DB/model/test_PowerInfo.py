@@ -2,6 +2,7 @@
 from logging import getLogger
 from time import sleep
 
+from src.Controller.API.adr_api_client import ADR_API_Client
 from src.DB.DB_Adapter import DBAdapter
 from src.DB.model.PowerInfo import power_info
 
@@ -10,6 +11,7 @@ logger = getLogger(__name__)
 
 class PowerInfoTest(unittest.TestCase):
     db = DBAdapter(on_test=True)
+    api = ADR_API_Client()
 
     def setUp(self):
         pass
@@ -51,4 +53,10 @@ class PowerInfoTest(unittest.TestCase):
         delete_data = self.db.select_one(power_info)
         self.assertIsNone(delete_data)
 
-
+    def test_fetch_data(self):
+        site_id = 'ace'
+        data_list = self.api.fetch_elec('ace', 300, 20210809)
+        obj_list = []
+        print(data_list)
+        for data in data_list:
+            print(data)

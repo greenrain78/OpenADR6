@@ -1,6 +1,7 @@
 ﻿import unittest
 from logging import getLogger
 
+from src.Controller.API.adr_api_client import ADR_API_Client
 from src.DB.DB_Adapter import DBAdapter
 from src.DB.model.EquipInfo import equipments_info
 
@@ -9,6 +10,7 @@ logger = getLogger(__name__)
 
 class EquipmentsInfoTest(unittest.TestCase):
     db = DBAdapter(on_test=True)
+    api = ADR_API_Client()
 
     def setUp(self):
         self.db.clear_table_all(equipments_info)
@@ -48,5 +50,18 @@ class EquipmentsInfoTest(unittest.TestCase):
         delete_data = self.db.select_one(equipments_info)
         self.assertIsNone(delete_data)
 
+    def test_fetch_data(self):
+        site_id = 'ace'
+        data_list = self.api.fetch_eqps(site_id)
+        obj_list = []
+        for data in data_list:
+            obj = equipments_info(siteID=site_id, **data)
+            self.db.insert_object(obj)
+            obj_list.append(obj)
+
+        # 검증
+        for obj in obj_list:
+            result = self.db.select_filter_one(equipments_info, perf_id=obj.perf_id)
+            self.assertEqual(obj, result)
 
 

@@ -35,25 +35,37 @@ class DataEngine:
                 else:
                     # 이름이 달라서 이것뿐이다.
                     if site_id != fetch_data.site_id:
-                        logger.warning(f"eqps changed site_id {fetch_data} -> {data}")
+                        logger.warning(f"eqps changed site_id \n"
+                                       f"{fetch_data} -> {data}")
                         fetch_data.site_id = data.get('siteID')
                         self.db.commit()
                     if int(data.get('perfId')) != fetch_data.perf_id:
-                        logger.warning(f"eqps changed perfId {fetch_data} -> {data}")
+                        logger.warning(f"eqps changed perfId \n"
+                                       f"{fetch_data} -> {data}")
                         fetch_data.perf_id = data.get('perfId')
                         self.db.commit()
                     if data.get('eqpCode') != fetch_data.eqp_code:
-                        logger.warning(f"eqps changed eqpCode {fetch_data} -> {data}")
+                        logger.warning(f"eqps changed eqpCode \n"
+                                       f"{fetch_data} -> {data}")
                         fetch_data.eqp_code = data.get('eqpCode')
                         self.db.commit()
                     if data.get('eqpName') != fetch_data.eqp_name:
-                        logger.warning(f"eqps changed eqpName {fetch_data} -> {data}")
+                        logger.warning(f"eqps changed eqpName \n"
+                                       f"{fetch_data} -> {data}")
                         fetch_data.eqp_name = data.get('eqpName')
                         self.db.commit()
                     if data.get('eqpType') != fetch_data.eqp_type:
-                        logger.warning(f"eqps changed eqpType {fetch_data} -> {data}")
+                        logger.warning(f"eqps changed eqpType \n"
+                                       f"{fetch_data} -> {data}")
                         fetch_data.eqp_type = data.get('eqpType')
                         self.db.commit()
+
+    def update_elec(self):
+        eqps_list = self.db.select_all(equipments_info)
+        for eqps_obj in eqps_list:
+            print(eqps_obj)
+            data = self.api.fetch_elec(eqps_obj.site_id, eqps_obj.perf_id, 20200309)
+            print(data)
 
 
 def ann_run_test(self):
