@@ -5,6 +5,7 @@ from time import sleep
 from src.Controller.API.adr_api_client import ADR_API_Client
 from src.DB.DB_Adapter import DBAdapter
 from src.DB.model.PowerInfo import power_info
+from test.utils_test_code import check_time_decorator
 
 logger = getLogger(__name__)
 
@@ -19,6 +20,7 @@ class PowerInfoTest(unittest.TestCase):
     def tearDown(self):
         self.db.clear_table_all(power_info)
 
+    @check_time_decorator
     def test_CRUD_one(self):
         logger.info("test_CRUD_one")
         data = {'siteID': 'test', 'pnName': 'PA-A-30_판넬PC', 'eqpName': '2층203호냉난방기',
@@ -49,10 +51,11 @@ class PowerInfoTest(unittest.TestCase):
         self.assertEqual(update_data.perf_id, 777)
 
         # 데이터 제거
-        self.db.delete_obj(obj)
+        self.db.delete(obj)
         delete_data = self.db.select_one(power_info)
         self.assertIsNone(delete_data)
 
+    @check_time_decorator
     def test_fetch_data(self):
         logger.info("test_fetch_data")
 

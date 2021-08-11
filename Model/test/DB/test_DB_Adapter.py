@@ -10,9 +10,17 @@ class DBAdapterTest(unittest.TestCase):
     db = DBAdapter(on_test=True)
 
     def setUp(self):
+        self.db.clear_table_all(equipments_info)
 
-        pass
+    def tearDown(self):
+        self.db.clear_table_all(equipments_info)
 
+    # @check_time_decorator
+    # def test_insert_list_None(self):
+    #     # 빈데이터인 경우 에러 발생
+    #     self.db.insert_list(None)
+
+    # @check_time_decorator
     # def test_insert_eqps(self):
     #     logger.info("test_insert_eqps")
     #     data_1 = {

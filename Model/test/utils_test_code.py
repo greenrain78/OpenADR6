@@ -2,17 +2,6 @@
 from logging import getLogger
 
 
-def datetime_decorator(func):
-    def decorated():
-        logger = getLogger(__name__)
-        start = time.time()  # 시작 시간 저장
-
-        func()
-        logger.info(f"test_update_elec - {time.time() - start}")
-
-    return decorated
-
-
 class CheckTimeDecorator:
 
     def __init__(self, f):
@@ -22,5 +11,16 @@ class CheckTimeDecorator:
         logger = getLogger(__name__)
         start = time.time()  # 시작 시간 저장
 
-        self.func()
-        logger.info(f"{self.func.__name__ } - {time.time() - start}")
+        self.func(self, *args, **kwargs)
+        logger.info(f"{self.func.__name__} - {time.time() - start}")
+
+
+def check_time_decorator(func):
+    def func_wrapper(*args, **kwargs):
+        logger = getLogger(f"{func.__module__}.timer")
+        start = time.time()  # 시작 시간 저장
+
+        func(*args, **kwargs)
+        logger.info(f"{func.__name__} - {time.time() - start}")
+
+    return func_wrapper

@@ -4,6 +4,7 @@
 import unittest
 
 from src.Controller.API.adr_api_client import ADR_API_Client
+from test.utils_test_code import check_time_decorator
 
 
 class ADR_API_ClientTest(unittest.TestCase):
@@ -11,16 +12,19 @@ class ADR_API_ClientTest(unittest.TestCase):
     def setUp(self):
         self.api = ADR_API_Client()
 
+    @check_time_decorator
     def test_ping_server_elec(self):
         # 결과 값이 일치 여부 확인
         data = self.api.fetch_elec('ace', 300, 20200309)
         self.assertIsNotNone(data, "api 호출이 정상적으로 진행되지 않습니다.")
 
+    @check_time_decorator
     def test_ping_server_eqps(self):
         # 결과 값이 일치 여부 확인
         data = self.api.fetch_eqps('ace')
         self.assertIsNotNone(data, "api 호출이 정상적으로 진행되지 않습니다.")
 
+    @check_time_decorator
     def test_fetch_elec(self):
         """
         데이터가 많아서 생략
@@ -31,6 +35,7 @@ class ADR_API_ClientTest(unittest.TestCase):
         # before_data = None
         # self.assertEqual(data, before_data, "Msg")
 
+    @check_time_decorator
     def test_fetch_eqps(self):
         """
         데이터가 많아서 생략

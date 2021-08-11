@@ -79,8 +79,13 @@ class DBAdapter:
         result = self.session.query(model).filter_by(**filter_list).all()
         return result
 
-    def delete_obj(self, obj):
-        self.session.delete(obj)
+    def delete(self, obj):
+        # 리스트인 경우 for문으로 제거
+        if type(obj) is list:
+            for i in obj:
+                self.session.delete(i)
+        else:
+            self.session.delete(obj)
 
     def clear_table_all(self, model):
         self.session.query(model).delete()
