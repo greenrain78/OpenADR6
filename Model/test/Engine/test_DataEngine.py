@@ -1,4 +1,5 @@
-﻿import unittest
+﻿import time
+import unittest
 from logging import getLogger
 from time import sleep
 
@@ -62,9 +63,15 @@ class DataEngineTest(unittest.TestCase):
     #     # 알림
     #     logger.warning("위 로그는 test_update_eqps_warnning 테스트 로그 입니다.")
     #
-    # def test_update_elec(self):
-    #     logger.info("test_update_elec")
-    #     # 장비 리스트 갱신
-    #     self.data_engine.update_eqps()
-    #     # 장비 정보 업데이트
-    #     self.data_engine.update_elec()
+    def test_update_elec(self):
+        logger.info("test_update_elec")
+        start = time.time()  # 시작 시간 저장
+
+        # 장비 리스트 갱신
+        self.data_engine.update_eqps()
+        # 장비 정보 업데이트
+        self.data_engine.update_elec()
+
+        logger.info(f"test_update_elec - {time.time() - start}")
+
+

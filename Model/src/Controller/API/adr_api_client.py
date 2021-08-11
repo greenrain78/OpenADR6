@@ -16,12 +16,14 @@ class ADR_API_Client:
     """
     BASE_URL = 'http://222.122.224.225:9091/cems-api'
     version: Optional[str] = None
+    count = 0
 
     def __init__(self, version: str = 'v1.0'):
         self.version = version
 
     @property
     def api_url(self) -> str:
+        self.count = self.count + 1
         return f'{self.BASE_URL}/{self.version}'
 
     @property
@@ -71,5 +73,6 @@ class ADR_API_Client:
         json_resp = response.json()
         data = json_resp.get("data", [])
         elecs = data.get("elecs")
-        logger.debug(f"{response} - url: {url}")
+
+        logger.debug(f"{response}({self.count}) - url: {url}")
         return elecs

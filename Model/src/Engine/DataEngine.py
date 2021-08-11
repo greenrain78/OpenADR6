@@ -1,6 +1,7 @@
-﻿from logging import getLogger
+﻿from datetime import datetime, timedelta
+from logging import getLogger
 
-from settings import siteId_list
+from settings import siteId_list, TEST_TIME
 from src.Controller.API.adr_api_client import ADR_API_Client
 from src.DB.DB_Adapter import DBAdapter
 from src.DB.model.EquipInfo import equipments_info
@@ -60,12 +61,20 @@ class DataEngine:
                         fetch_data.eqp_type = data.get('eqpType')
                         self.db.commit()
 
-    def update_elec(self):
+    def update_elec(self, before_days: int = 7):
         eqps_list = self.db.select_all(equipments_info)
+        obj_list = []
+        # for day in range(before_days):
+        #     req_time = datetime.now() - timedelta(days=day) - TEST_TIME
+        #     req_time = req_time.strftime("%Y%m%d")  # 오늘 날짜를 api 형식에 맞게 변형
+        #     print(req_time)
         for eqps_obj in eqps_list:
-            print(eqps_obj)
-            data = self.api.fetch_elec(eqps_obj.site_id, eqps_obj.perf_id, 20200309)
-            print(data)
+            print(f"{eqps_obj} 데이터 조회")
+            for day in range(before_days):
+                req_time = datetime.now() - timedelta(days=day) - TEST_TIME
+                req_time = req_time.strftime("%Y%m%d")  # 오늘 날짜를 api 형식에 맞게 변형
+                data = self.api.fetch_elec(eqps_obj.site_id, eqps_obj.perf_id, req_time)
+                print(len(data))
 
 
 def ann_run_test(self):

@@ -26,7 +26,8 @@ class ADR_API_ClientTest(unittest.TestCase):
         데이터가 많아서 생략
         :return:
         """
-        data = self.api.fetch_elec('ace', 300, 20200309)
+        data = self.api.fetch_elec('ace', 254, 20200810)
+        # print(data)
         # before_data = None
         # self.assertEqual(data, before_data, "Msg")
 
