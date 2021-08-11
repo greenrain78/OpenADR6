@@ -72,8 +72,10 @@ class DataEngine:
 
                 print(len(api_data))
         start = time.time()  # 시작 시간 저장
-        self.db.delete(remove_list)
-        self.db.insert_list(insert_list)
+        if remove_list:
+            self.db.delete(remove_list)
+        if insert_list:
+            self.db.insert_list(insert_list)
         logger.info(f"timer : {time.time() - start}")
 
 
