@@ -101,3 +101,5 @@ services:
     # 환경변수 설정 파일
     env_file:
       - Model/model-variables.env
+    depends_on:
+      - backend
