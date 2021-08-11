@@ -58,7 +58,8 @@ class power_info(Base):
         self.created_at = datetime.now()
 
     def __repr__(self):
-        return f"<equipments_info({self.id}, {self.site_id}, {self.perf_id}, " \
+        return f"<power_info({self.id}, {self.site_id}, {self.perf_id}, " \
+               f"{self.pn_name}, {self.eqp_name}, {self.ymdms} " \
                f"{self.vol_tage}, {self.am_pere}, {self.ar_power} " \
                f"{self.atv_power}, {self.rat_power}, {self.pw_factor} " \
                f"{self.accrue_power}, {self.voltager_s}, {self.voltages_t} " \

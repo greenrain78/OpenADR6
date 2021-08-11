@@ -35,3 +35,10 @@ class power_info(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+
+class power_update(models.Model):
+    site_id = models.CharField(max_length=50)
+    ymdms = models.CharField(max_length=50)
+    is_updated = models.BooleanField()
+
+    created_at = models.DateTimeField(auto_now_add=True)

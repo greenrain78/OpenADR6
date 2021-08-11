@@ -14,7 +14,7 @@ class PowerInfoTest(unittest.TestCase):
     api = ADR_API_Client()
 
     def setUp(self):
-        pass
+        self.db.clear_table_all(power_info)
 
     def tearDown(self):
         self.db.clear_table_all(power_info)
@@ -54,9 +54,17 @@ class PowerInfoTest(unittest.TestCase):
         self.assertIsNone(delete_data)
 
     def test_fetch_data(self):
+        logger.info("test_fetch_data")
+
         site_id = 'ace'
-        data_list = self.api.fetch_elec('ace', 300, 20210809)
+        data_list = self.api.fetch_elec('ace', 300, 20200309)
         obj_list = []
-        print(data_list)
+        # 데이터 추가
         for data in data_list:
-            print(data)
+            obj = power_info(siteID=site_id, **data)
+            obj_list.append(obj)
+        self.db.insert_list(obj_list)
+
+        for obj in obj_list:
+            result = self.db.select_filter_one(power_info, perf_id=obj.perf_id, ymdms=obj.ymdms)
+            self.assertEqual(obj, result)

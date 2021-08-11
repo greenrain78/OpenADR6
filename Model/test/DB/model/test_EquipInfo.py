@@ -51,13 +51,15 @@ class EquipmentsInfoTest(unittest.TestCase):
         self.assertIsNone(delete_data)
 
     def test_fetch_data(self):
+        logger.info("test_fetch_data")
+
         site_id = 'ace'
         data_list = self.api.fetch_eqps(site_id)
         obj_list = []
         for data in data_list:
             obj = equipments_info(siteID=site_id, **data)
-            self.db.insert_object(obj)
             obj_list.append(obj)
+        self.db.insert_list(obj_list)
 
         # 검증
         for obj in obj_list:
