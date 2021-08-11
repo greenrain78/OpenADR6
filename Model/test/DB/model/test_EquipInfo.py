@@ -11,7 +11,7 @@ class EquipmentsInfoTest(unittest.TestCase):
     db = DBAdapter(on_test=True)
 
     def setUp(self):
-        pass
+        self.db.clear_table_all(equipments_info)
 
     def tearDown(self):
         self.db.clear_table_all(equipments_info)
@@ -47,3 +47,6 @@ class EquipmentsInfoTest(unittest.TestCase):
         self.db.delete_obj(obj)
         delete_data = self.db.select_one(equipments_info)
         self.assertIsNone(delete_data)
+
+
+

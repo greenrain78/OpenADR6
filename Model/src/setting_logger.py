@@ -7,7 +7,7 @@ config = {
     "disable_existing_loggers": False,
     "formatters": {
         "simple": {
-            "format": "%(asctime)s:%(module)s:%(lineno)s (%(levelname)s) %(message)s",
+            "format": "%(asctime)s:%(name)s:%(lineno)s (%(levelname)s) %(message)s",
             "datefmt": "%Y-%m-%d %H:%M:%S"
         },
         "complex": {
@@ -26,7 +26,7 @@ config = {
             "class": "logging.FileHandler",
             "filename": "logs/error.log",
             "formatter": "complex",
-            "level": "ERROR",
+            "level": "WARNING",
         },
         "all_file": {
             "class": "logging.handlers.TimedRotatingFileHandler",

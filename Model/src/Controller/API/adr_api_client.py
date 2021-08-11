@@ -42,8 +42,8 @@ class ADR_API_Client:
         url = f'{self.api_url}/ems/eqps/{siteId}'
         response = requests.get(url, headers=self.header_data)
         json_resp = response.json()
-
-        return json_resp.get("data", [])
+        result = json_resp.get("data", []).get("eqps")
+        return result
 
     def fetch_elec(self, siteId: str, perfId, ymd):
         """

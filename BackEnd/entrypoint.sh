@@ -3,6 +3,7 @@
 # https://www.jetbrains.com/help/pycharm/configuring-line-endings-and-line-separators.html
 
 echo "Apply database migrations"
+python manage.py makemigrations
 python manage.py migrate
 python manage.py migrate --database=test
 

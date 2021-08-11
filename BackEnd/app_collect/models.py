@@ -15,7 +15,7 @@ class equipments_info(models.Model):
 
 class power_info(models.Model):
     site_id = models.CharField(max_length=50)
-    perf_id = models.CharField(max_length=50)
+    perf_id = models.SmallIntegerField()
 
     pn_name = models.CharField(max_length=50)
     eqp_name = models.CharField(max_length=50)

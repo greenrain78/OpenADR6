@@ -1,6 +1,7 @@
 import os
 
 IS_SQL_ECHO = False
+IS_MAIN_RUNNING = False
 predict_time = {
     "week": 1
 }

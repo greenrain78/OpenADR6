@@ -31,11 +31,14 @@ class power_info(Base):
     created_at = Column(DateTime)
 
     def __init__(self, siteID: str, perfId: int,
-                 eqpCode: str, eqpName: str, eqpType: str
+                 pnName: str, eqpName: str, ymdms: str,
+                 volTage: str, amPere: str, arPower: str,
+                 atvPower: str, ratPower: str, pwFactor: str,
+                 accruePower: str, voltagerS: str, voltagesT: str,
+                 voltagetR: str, temperature: str
                  ):
         self.site_id = siteID
         self.perf_id = perfId
-
         self.pn_name = pnName
         self.eqp_name = eqpName
         self.ymdms = ymdms
@@ -54,4 +57,10 @@ class power_info(Base):
 
         self.created_at = datetime.now()
 
-
+    def __repr__(self):
+        return f"<equipments_info({self.id}, {self.site_id}, {self.perf_id}, " \
+               f"{self.vol_tage}, {self.am_pere}, {self.ar_power} " \
+               f"{self.atv_power}, {self.rat_power}, {self.pw_factor} " \
+               f"{self.accrue_power}, {self.voltager_s}, {self.voltages_t} " \
+               f"{self.voltaget_r}, {self.temperature}, " \
+               f"{self.created_at})>"

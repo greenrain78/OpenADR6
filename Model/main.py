@@ -5,6 +5,7 @@ import unittest
 
 from time import sleep
 
+from settings import IS_MAIN_RUNNING
 from src.Controller.env_import import get_env_bool
 from src.Engine.Planner import schedule_registration
 from src.Controller.Schedule.schedule_manager import MainScheduler
@@ -53,6 +54,6 @@ if __name__ == '__main__':
     # 작업 코드
     # print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
     # 임시로
-    while True:
+    while IS_MAIN_RUNNING:
         logger.debug('프로그램 실행중')
         sleep(1)

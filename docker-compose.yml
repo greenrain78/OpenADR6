@@ -60,7 +60,7 @@ services:
       - ./FrontEnd:/app
       - /app/node_modules # 도커 컨테이너에서만 존재?
     ports:
-      - "10300:3000"
+      - "10400:3000"
     environment:
       - NODE_ENV=development
     stdin_open: true
@@ -75,7 +75,7 @@ services:
       - ./FrontEnd:/app
       - /app/node_modules # 도커 컨테이너에서만 존재?
     ports:
-      - "10310:3000"
+      - "10410:3000"
     environment:
       - NODE_ENV=development
     stdin_open: true

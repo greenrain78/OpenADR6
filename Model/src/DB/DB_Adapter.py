@@ -71,8 +71,12 @@ class DBAdapter:
         result = self.session.query(model)
         return result
 
-    def select_filter(self, model, filter_list: dict):
-        result = self.session.query(model).filter_by(**filter_list)
+    def select_filter_one(self, model, **filter_list):
+        result = self.session.query(model).filter_by(**filter_list).first()
+        return result
+
+    def select_filter_all(self, model, **filter_list):
+        result = self.session.query(model).filter_by(**filter_list).all()
         return result
 
     def delete_obj(self, obj):
