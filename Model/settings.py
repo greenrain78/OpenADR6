@@ -3,6 +3,7 @@ from datetime import timedelta
 
 IS_SQL_ECHO = False
 IS_MAIN_RUNNING = False
+IS_RUN_ALL_TEST = False
 TEST_TIME = timedelta(days=365)
 predict_time = {
     "week": 1

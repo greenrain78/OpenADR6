@@ -7,6 +7,7 @@ from time import sleep
 
 from settings import IS_MAIN_RUNNING
 from src.Controller.env_import import get_env_bool
+from src.Controller.run_test_code import run_tests
 from src.Engine.Planner import schedule_registration
 from src.Controller.Schedule.schedule_manager import MainScheduler
 from src.setting_logger import py_log_settings
@@ -32,12 +33,7 @@ if __name__ == '__main__':
     # 에러시 프로그램 종료
     if get_env_bool('IS_RUN_TEST'):
         logger.info('test 코드 실행')
-        # 테스트 코드 탐색
-        loader = unittest.TestLoader()
-        tests = loader.discover('.')
-        # 테스트 실행
-        testRunner = unittest.runner.TextTestRunner()
-        testRunner.run(tests)
+        run_tests()
     else:
         logger.info('test 코드 미실행')
 
