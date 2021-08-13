@@ -93,5 +93,44 @@ class DataEngine:
         logger.info(f"api 정보 출력{self.api}")
         logger.info(f"elec 데이터 업데이트 - 추가: {len(insert_list)}, 갱신: {len(remove_list) - len(insert_list)}")
 
+    def update_elec_remove_all(self, before_days: int = 7):
+        """
+        해당 부분 DB 알고리즘 개선 요망
+        """
+        insert_list = []
+        remove_list = []
+        # DB에서 장비 데이터 가져오기
+        eqps_list = self.db.select_all(equipments_info)
+
+        # 지정한 날짜 동안에 대한 데이터 조회
+        for day in range(before_days):
+            req_time = datetime.now() - timedelta(days=day) - TEST_TIME
+            req_time = req_time.strftime("%Y%m%d")  # 오늘 날짜를 api 형식에 맞게 변형
+            logger.info(f"{req_time}일차 데이터 조회")
+
+            # 해당 날짜 Db 데이터 제거
+            tmp_query = self.db.get_query(power_info)
+            old_data = tmp_query.filter(power_info.ymdms.like(f"{req_time}%")).all()
+            print(f"old data : {len(old_data)}")
+
+            # 장비 하나씩 데이터 조회
+            for eqps_obj in eqps_list:
+                # api로 데이터 받아오기
+                data_list = self.api.fetch_elec(eqps_obj.site_id, eqps_obj.perf_id, req_time)
+                # 받은 데이터를 하나씩 분리하여 저장
+                for raw_data in data_list:
+                    # 데이터 객체 생성
+                    data = power_info(siteID=eqps_obj.site_id, **raw_data)
+                    # 데이터 추가
+                    insert_list.append(data)
+
+        # DB 데이터 추가 및 제거
+        if remove_list:
+            self.db.delete(remove_list)
+        if insert_list:
+            self.db.insert_list(insert_list)
+        logger.info(f"api 정보 출력{self.api}")
+        logger.info(f"elec 데이터 업데이트 - 추가: {len(insert_list)}, 갱신: {len(remove_list) - len(insert_list)}")
+
     def ann_run_test(self):
         pass

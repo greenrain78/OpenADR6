@@ -102,6 +102,11 @@ class DBAdapter(object):
         return result
 
     @record_decorator
+    def get_query(self, model):
+        result = self.session.query(model)
+        return result
+
+    @record_decorator
     def delete(self, obj):
         # 리스트인 경우 for문으로 제거
         if type(obj) is list:

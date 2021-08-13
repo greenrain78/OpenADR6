@@ -67,13 +67,31 @@ class DataEngineTest(unittest.TestCase):
         # 알림
         logger.warning("위 로그는 test_update_eqps_warnning 테스트 로그 입니다.")
 
+    # @check_time_decorator
+    # def test_update_elec(self):
+    #
+    #     # 장비 리스트 갱신
+    #     self.data_engine.update_eqps()
+    #     # 장비 정보 업데이트
+    #     self.data_engine.update_elec()
+        # print("----------")
+        # sleep(1)
+        # self.data_engine.update_elec(1)
+
+        # print("end not")
+        # while True:
+        #     pass
+
     @check_time_decorator
-    def test_update_elec(self):
+    def test_update_elec_remove_all(self):
 
         # 장비 리스트 갱신
         self.data_engine.update_eqps()
         # 장비 정보 업데이트
-        self.data_engine.update_elec()
+        self.data_engine.update_elec_remove_all()
+        # print("----------")
+        # self.data_engine.update_elec_remove_all(1)
+
         # print("----------")
         # sleep(1)
         # self.data_engine.update_elec(1)

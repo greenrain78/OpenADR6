@@ -18,7 +18,7 @@ def run_tests():
         # 테스트 코드 추기
         fast = TestSuite()
         # fast.addTest(EquipmentsInfoTest('test_CRUD_one'))
-        fast.addTest(DataEngineTest('test_update_elec'))
+        fast.addTest(DataEngineTest('test_update_elec_remove_all'))
         # 테스트 실행
 
         runner = unittest.TextTestRunner()
