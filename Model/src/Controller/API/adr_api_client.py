@@ -7,33 +7,9 @@ from typing import Optional
 import requests
 
 # 로거 생성
+from src.Controller.time_record import Record
+
 logger = logging.getLogger(__name__)
-
-
-class API_Record:
-    def __init__(self, name):
-        self.name = name
-        self.min = 0
-        self.max = 0
-        self.total = 0
-        self.average = 0
-        self.count = 0
-
-    def __repr__(self):
-        return f"{self.name}(count({self.count}): total({self.total}) - [{self.average}, {self.min}, {self.max}])"
-
-    def insert_recode(self, api_time):
-        self.count += 1
-        self.total += api_time
-
-        # 최대 최소 기록
-        if api_time < self.min:
-            self.min = api_time
-        elif api_time > self.max:
-            self.max = api_time
-
-        # 평균 기록
-        self.average = self.total / self.count
 
 
 class ADR_API_Client:
@@ -43,8 +19,8 @@ class ADR_API_Client:
     BASE_URL = 'http://222.122.224.225:9091/cems-api'
     version: Optional[str] = None
     # api 정보
-    eqps_recode = API_Record("eqps")
-    elec_recode = API_Record("elec")
+    eqps_recode = Record("eqps")
+    elec_recode = Record("elec")
 
     def __init__(self, version: str = 'v1.0'):
         self.version = version
@@ -59,12 +35,12 @@ class ADR_API_Client:
             'Authorization': '1234qwer',
         }
 
-    def call_requests(self, url, recode: API_Record):
+    def call_requests(self, url, recode: Record):
         # 시간 기록
         start_time = time.time()
 
         count = 0
-        while count <= 0:
+        while count >= 0:
             try:
                 # 실질 api 요청
                 response = requests.get(url, headers=self.header_data)
