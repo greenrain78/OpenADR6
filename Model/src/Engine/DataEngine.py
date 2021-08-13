@@ -45,6 +45,9 @@ class DataEngine:
                 self.db.delete(remove_list)
 
     def update_elec(self, before_days: int = 7):
+        """
+        해당 부분 DB 알고리즘 개선 요망
+        """
         insert_list = []
         remove_list = []
         # DB에서 장비 데이터 가져오기
@@ -80,6 +83,7 @@ class DataEngine:
                     else:
                         pass
                 print(f"timer {time.time() - start_time}")
+                print(f"DB: {self.db}")
 
         # DB 데이터 추가 및 제거
         if remove_list:
