@@ -46,15 +46,9 @@ class equipments_info(Base):
 
     def __eq__(self, other):
         # 동일 객체인지 확인
-        if self.site_id != other.site_id:
-            return False
-        if self.perf_id != other.perf_id:
-            return False
-        if self.eqp_code != other.eqp_code:
-            return False
-        if self.eqp_name != other.eqp_name:
-            return False
-        if self.eqp_type != other.eqp_type:
-            return False
-        return True
-
+        # 시간 요소 배제
+        return self.site_id == other.site_id \
+                 and self.perf_id == other.perf_id \
+                 and self.eqp_code == other.eqp_code \
+                 and self.eqp_name == other.eqp_name \
+                 and self.eqp_type == other.eqp_type

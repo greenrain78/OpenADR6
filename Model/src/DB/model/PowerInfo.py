@@ -38,7 +38,7 @@ class power_info(Base):
                  voltagetR: str, temperature: str
                  ):
         self.site_id = siteID
-        self.perf_id = perfId
+        self.perf_id = int(perfId)
         self.pn_name = pnName
         self.eqp_name = eqpName
         self.ymdms = ymdms
@@ -65,3 +65,23 @@ class power_info(Base):
                f"{self.accrue_power}, {self.voltager_s}, {self.voltages_t} " \
                f"{self.voltaget_r}, {self.temperature}, " \
                f"{self.created_at})>"
+
+    def __eq__(self, other):
+        # 동일 객체인지 확인
+        # 시간 요소 배제
+        return self.site_id == other.site_id \
+                 and self.perf_id == other.perf_id \
+                 and self.pn_name == other.pn_name \
+                 and self.eqp_name == other.eqp_name \
+                 and self.ymdms == other.ymdms \
+                 and self.vol_tage == other.vol_tage \
+                 and self.am_pere == other.am_pere \
+                 and self.ar_power == other.ar_power \
+                 and self.atv_power == other.atv_power \
+                 and self.rat_power == other.rat_power \
+                 and self.pw_factor == other.pw_factor \
+                 and self.accrue_power == other.accrue_power \
+                 and self.voltager_s == other.voltager_s \
+                 and self.voltages_t == other.voltages_t \
+                 and self.voltaget_r == other.voltaget_r \
+                 and self.temperature == other.temperature

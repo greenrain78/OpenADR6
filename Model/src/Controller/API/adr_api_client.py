@@ -5,7 +5,6 @@ import logging
 from typing import Optional
 import requests
 
-
 # 로거 생성
 logger = logging.getLogger(__name__)
 
@@ -32,6 +31,20 @@ class ADR_API_Client:
             'Authorization': '1234qwer',
         }
 
+    def call_requests(self, url):
+        count = 0
+        while count <= 0:
+            try:
+                response = requests.get(url, headers=self.header_data)
+                return response
+            # 해당 오류가 발생시 무한 재시도 - 에러메세지 발생
+            except requests.exceptions.ConnectionError:
+                logger.error(f"요청 실패 재시도 {count} {url}")
+                count += 1
+            except Exception as e:
+                logger.error(f"api 요청중 예상치 못한 오류 발생: {e}")
+                raise e
+
     def fetch_eqps(self, siteId: str):
         """
         :param siteId:
@@ -42,7 +55,8 @@ class ADR_API_Client:
         - perfId 성능 아이디
         """
         url = f'{self.api_url}/ems/eqps/{siteId}'
-        response = requests.get(url, headers=self.header_data)
+
+        response = self.call_requests(url)
         json_resp = response.json()
         result = json_resp.get("data", []).get("eqps")
         return result

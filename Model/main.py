@@ -33,6 +33,7 @@ if __name__ == '__main__':
     # 에러시 프로그램 종료
     if get_env_bool('IS_RUN_TEST'):
         logger.info('test 코드 실행')
+        # 테스트 코드 실행
         run_tests()
     else:
         logger.info('test 코드 미실행')

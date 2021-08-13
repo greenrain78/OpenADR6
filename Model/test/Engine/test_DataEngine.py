@@ -7,6 +7,7 @@ from settings import siteId_list
 from src.Controller.API.adr_api_client import ADR_API_Client
 from src.DB.DB_Adapter import DBAdapter
 from src.DB.model.EquipInfo import equipments_info
+from src.DB.model.PowerInfo import power_info
 from src.Engine.DataEngine import DataEngine
 from test.utils_test_code import check_time_decorator
 
@@ -20,9 +21,11 @@ class DataEngineTest(unittest.TestCase):
 
     def setUp(self):
         self.db.clear_table_all(equipments_info)
+        self.db.clear_table_all(power_info)
 
     def tearDown(self):
         self.db.clear_table_all(equipments_info)
+        self.db.clear_table_all(power_info)
 
     @check_time_decorator
     def test_recent_date_eqps(self):
@@ -70,8 +73,11 @@ class DataEngineTest(unittest.TestCase):
         # 장비 리스트 갱신
         self.data_engine.update_eqps()
         # 장비 정보 업데이트
-        self.data_engine.update_elec()
+        self.data_engine.update_elec(1)
+        # print("----------")
+        # sleep(1)
+        # self.data_engine.update_elec(1)
 
-        print("end not")
-        while True:
-            pass
+        # print("end not")
+        # while True:
+        #     pass
