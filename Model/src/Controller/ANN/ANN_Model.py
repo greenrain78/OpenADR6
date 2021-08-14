@@ -5,6 +5,8 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 import joblib
 
+from settings import ANN_MODEL_SAVE_PATH
+
 
 class ANN_Sample_Model:
     def __init__(self):
@@ -19,7 +21,7 @@ class ANN_Sample_Model:
     def save(self):
         # 모델 저장
         # joblib(model, 'model_save1.pkl') # 오류로 해당 모듈을 사용 불가
-        with open('model_save1.pkl', 'wb') as model_file:
+        with open(f'{ANN_MODEL_SAVE_PATH}model_save1.pkl', 'wb') as model_file:
             pickle.dump(self.model, model_file)
 
     def model_score(self, x_dataset, y_dataset):
