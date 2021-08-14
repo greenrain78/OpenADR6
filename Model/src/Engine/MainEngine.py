@@ -28,12 +28,13 @@ class MainEngine:
 
             # 데이터 검색
             data = self.data_engine.get_ann_data(eqps_obj)
-            print(f"MainEngine: {data}")
             chart_data = data['y_dataset'].astype(float)
             chart_data_list.append(chart_data)
+
         result_chart_data = pandas.concat(chart_data_list)
 
-        self.chart_maker.df_to_line_chart(result_chart_data, "raw_data_chart1")
+        print(f"MainEngine: {result_chart_data}")
+        self.chart_maker.df_to_scatter_chart(result_chart_data, 'ymdms', 'atv_power', filename="raw_data_chart1")
 
             # ann 학습
 

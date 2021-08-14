@@ -255,7 +255,9 @@ class DataEngine:
         # 데이터 분리
         x_dataset = main_df[['perf_id', 'ymdms', 'vol_tage', 'am_pere', 'ar_power', 'rat_power',
                              'pw_factor', 'accrue_power', 'voltager_s', 'voltages_t', 'voltaget_r', 'temperature']]
-        y_dataset = main_df[['atv_power']]
+        y_dataset = main_df[['ymdms', 'atv_power']]
+        # 20200815000256
+        y_dataset['ymdms'] = y_dataset['ymdms'].str[8:]
 
         result = {
             "x_dataset": x_dataset,
