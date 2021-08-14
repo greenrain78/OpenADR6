@@ -10,3 +10,4 @@ Model/logs/server_info
 Model/logs/error.log
 
 Model/model-variables.env
+Model/file_data
