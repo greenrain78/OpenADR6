@@ -5,7 +5,7 @@ IS_SQL_ECHO = False
 IS_MAIN_RUNNING = False
 IS_RUN_ALL_TEST = False
 TEST_TIME = timedelta(days=365)
-ANN_MODEL_SAVE_PATH = "file_data/ANN/"
+ANN_MODEL_SAVE_PATH = "file_data/ANN"
 predict_time = {
     "week": 1
 }
