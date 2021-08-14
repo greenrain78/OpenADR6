@@ -182,9 +182,11 @@ class DataEngine:
                         'pw_factor', 'accrue_power', 'voltager_s', 'voltages_t', 'voltaget_r', 'temperature']]
 
         print("predict ------------------------------")
-        self.ann.predict(x_dataset)
+        y_predict = self.ann.predict(x_dataset)
 
         y_dataset = df[['atv_power']]
+        self.ann.save_chart_img(y_predict=y_predict, y_test_dataset=y_dataset)
+
 
 
 

@@ -1,9 +1,10 @@
 import pickle
 
-import pandas as pandas
+import matplotlib.pyplot as plt
+
+import joblib
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-import joblib
 
 from settings import ANN_MODEL_SAVE_PATH
 
@@ -38,6 +39,9 @@ class ANN_Sample_Model:
         # 데이터 출력
         print("predict")
         print(y_predict)
+        return y_predict
+
+    def save_chart_img(self, y_predict, y_test_dataset):
 
         # 그래프
         plt.scatter(y_test_dataset, y_predict, alpha=0.4)
