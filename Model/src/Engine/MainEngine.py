@@ -5,15 +5,9 @@ from src.Engine.DataEngine import DataEngine
 
 class MainEngine:
 
-    def __init__(self):
+    def __init__(self, data_engine: DataEngine):
         # DB 데이터 입출력
-        db = DBAdapter()
-        self.data_engine = DataEngine(db)
-        pass
-
-    def get_recent_date(self):
-        # 장비 데이터 업데이트 확인
-        pass
+        self.data_engine = data_engine
 
     def ann_run_test(self):
         # 장비 리스트 갱신
@@ -21,13 +15,11 @@ class MainEngine:
         # 장비 정보 업데이트
         self.data_engine.update_elec_remove_all()
 
-        self.data_engine.ann_run_test()
+        # 장비 데이터 가져오기
+        eqps_list = self.data_engine.get_all_eqps()
+        eqps_obj = eqps_list[0]
+        print(f"MainEngine: eqps_obj: {eqps_obj}")
 
-        pass
-
-
-
-
-
-
-
+        # 데이터 검색
+        data = self.data_engine.get_ann_data(eqps_obj)
+        print(f"MainEngine: {data}")

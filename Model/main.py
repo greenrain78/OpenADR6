@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # start = time.time()  # 시작 시간 저장
 
     # 객체 생성
-    main_engine = MainEngine()
+    # main_engine = MainEngine()
     scheduler = MainScheduler()
 
     # 일정 등록

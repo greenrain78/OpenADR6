@@ -49,6 +49,11 @@ class DataEngine:
             if not remove_list:
                 self.db.delete(remove_list)
 
+    def get_all_eqps(self):
+        base_query = self.db.select_query(equipments_info)
+        eqps_list = self.db.get_obj_all(base_query)
+        return eqps_list
+
     def update_elec(self, before_days: int = 7):
         """
         해당 부분 DB 알고리즘 개선 요망
@@ -56,8 +61,7 @@ class DataEngine:
         insert_list = []
         remove_list = []
         # DB에서 장비 데이터 가져오기
-        base_query = self.db.select_query(equipments_info)
-        eqps_list = self.db.get_obj_all(base_query)
+        eqps_list = self.get_all_eqps()
 
         # 지정한 날짜 동안에 대한 데이터 조회
         for day in range(before_days):
@@ -110,7 +114,7 @@ class DataEngine:
         remove_list = []
         # DB에서 장비 데이터 가져오기
         base_query = self.db.select_query(equipments_info)
-        eqps_list = self.db.get_obj_all(base_query)[:10]
+        eqps_list = self.db.get_obj_all(base_query)
 
         # 지정한 날짜 동안에 대한 데이터 조회
         for day in range(before_days):
@@ -231,3 +235,28 @@ class DataEngine:
         # tmp_ann = ANN_Sample_Model()
         # tmp_ann.load_model()
         # print(f"second model : {tmp_ann}")
+
+    def get_ann_data(self, eqps_info: equipments_info, before_days=7):
+        main_df = pandas.DataFrame()
+        # 데이터 가져오기
+        for day in range(before_days):
+            req_time = datetime.now() - timedelta(days=day) - TEST_TIME
+            req_time = req_time.strftime("%Y%m%d")  # 오늘 날짜를 api 형식에 맞게 변형
+
+            base_query = self.db.select_query(power_info)
+            query_add_filter = base_query.filter_by(site_id=eqps_info.site_id, perf_id=eqps_info.perf_id)
+            query_add_filter = query_add_filter.filter(power_info.ymdms.like(f"{req_time}%"))
+            # 해당 데이터 모두 가져와서 dataframe으로 변환
+            main_df.append(self.db.read_dataframe(query_add_filter))
+        
+        logger.debug(f"main_df: {main_df}")
+        # 데이터 분리
+        x_dataset = main_df[['perf_id', 'ymdms', 'vol_tage', 'am_pere', 'ar_power', 'rat_power',
+                             'pw_factor', 'accrue_power', 'voltager_s', 'voltages_t', 'voltaget_r', 'temperature']]
+        y_dataset = main_df[['atv_power']]
+
+        result = {
+            "x_dataset": x_dataset,
+            "y_dataset": y_dataset,
+        }
+        return result
