@@ -51,7 +51,7 @@ class DataEngine:
 
     def get_all_eqps(self):
         base_query = self.db.select_query(equipments_info)
-        eqps_list = self.db.get_obj_all(base_query)[:10]
+        eqps_list = self.db.get_obj_all(base_query)
         return eqps_list
 
     def update_elec(self, before_days: int = 7):

@@ -3,6 +3,8 @@ from src.Controller.API.adr_api_client import ADR_API_Client
 from src.DB.DB_Adapter import DBAdapter
 from src.Engine.DataEngine import DataEngine
 
+import pandas
+
 
 class MainEngine:
 
@@ -19,15 +21,19 @@ class MainEngine:
 
         # 장비 데이터 가져오기
         eqps_list = self.data_engine.get_all_eqps()
-        eqps_obj = eqps_list[0]
-        # for eqps_obj in eqps_list[:5]:
-        print(f"MainEngine: eqps_obj: {eqps_obj}")
+        # eqps_obj = eqps_list[0]
+        chart_data_list = []
+        for eqps_obj in eqps_list:
+            print(f"MainEngine: eqps_obj: {eqps_obj}")
 
-        # 데이터 검색
-        data = self.data_engine.get_ann_data(eqps_obj)
-        print(f"MainEngine: {data}")
-        chart_data = data['y_dataset'].astype(float)
-        self.chart_maker.df_to_line_chart(chart_data, "raw_data_chart1")
+            # 데이터 검색
+            data = self.data_engine.get_ann_data(eqps_obj)
+            print(f"MainEngine: {data}")
+            chart_data = data['y_dataset'].astype(float)
+            chart_data_list.append(chart_data)
+        result_chart_data = pandas.concat(chart_data_list)
+
+        self.chart_maker.df_to_line_chart(result_chart_data, "raw_data_chart1")
 
             # ann 학습
 
