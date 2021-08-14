@@ -110,13 +110,14 @@ class DataEngine:
         """
         해당 부분 DB 알고리즘 개선 요망
         """
-        insert_list = []
-        remove_list = []
         # DB에서 장비 데이터 가져오기
         eqps_list = self.get_all_eqps()
 
         # 지정한 날짜 동안에 대한 데이터 조회
         for day in range(before_days):
+            insert_list = []
+            remove_list = []
+
             req_time = datetime.now() - timedelta(days=day) - TEST_TIME
             req_time = req_time.strftime("%Y%m%d")  # 오늘 날짜를 api 형식에 맞게 변형
             logger.info(f"{req_time}일차 데이터 조회")
@@ -251,7 +252,7 @@ class DataEngine:
         # 합치기
         main_df = pandas.concat(df_list)
 
-        logger.debug(f"main_df: {main_df}")
+        logger.debug(f"main_df: {main_df.info()}")
         # 데이터 분리
         x_dataset = main_df[['perf_id', 'ymdms', 'vol_tage', 'am_pere', 'ar_power', 'rat_power',
                              'pw_factor', 'accrue_power', 'voltager_s', 'voltages_t', 'voltaget_r', 'temperature']]
