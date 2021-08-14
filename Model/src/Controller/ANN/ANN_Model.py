@@ -30,19 +30,22 @@ class ANN_Sample_Model:
         print(self.model.score(x_dataset, y_dataset))
 
     def predict(self, input_data: pd.DataFrame):
-        """:arg
         """
-        # 그런데 읽는것은 정상적으로 수행
-        model = joblib.load('model_save1.pkl')
+        """
+        # 예측 수행
+        y_predict = self.model.predict(input_data)
 
-        score_dataset = pd.read_csv('ANN/api_sample_data_0308.csv', encoding='utf-8')  # 20210307 데이터
-        x_score_dataset = score_dataset[['ymdms', 'volTage', 'amPere', 'arPower', 'ratPower',
-                                         'pwFactor', 'accruePower', 'voltagerS', 'voltagesT', 'voltagetR',
-                                         'temperature']]
-        y_score_dataset = score_dataset[['atvPower']]
+        # 데이터 출력
         print("predict")
-        print(model.coef_)
-        print(model.score(x_score_dataset, y_score_dataset))
+        print(y_predict)
+
+        # 그래프
+        plt.scatter(y_test_dataset, y_predict, alpha=0.4)
+        plt.xlabel("Actual")
+        plt.ylabel("Predicted")
+        plt.title("test code")
+        plt.show()
+        plt.savefig(f'{ANN_MODEL_SAVE_PATH}/fig1.png', dpi=300)
 
     def save_model(self, filename="model_save1"):
         # 모델 저장

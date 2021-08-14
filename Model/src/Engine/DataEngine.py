@@ -156,13 +156,15 @@ class DataEngine:
         data = self.db.get_obj_all(query_add_filter)
         df = self.db.read_dataframe(query_add_filter)
 
-        print(f"data : {len(data)}")
-        print(len(data))
+        # print(f"data : {len(data)}")
+        # print(len(data))
         x_dataset = df[['perf_id', 'ymdms', 'vol_tage', 'am_pere', 'ar_power', 'rat_power',
                         'pw_factor', 'accrue_power', 'voltager_s', 'voltages_t', 'voltaget_r', 'temperature']]
         y_dataset = df[['atv_power']]
-        print(f"x_dataset: {x_dataset}")
-        print(f"y_dataset: {y_dataset}")
+        # print(f"x_dataset: {x_dataset}")
+        # print(f"y_dataset: {y_dataset}")
+
+        # 모델 학습
         self.ann.train(x_dataset, y_dataset)
 
         # 날짜 설정
@@ -178,15 +180,36 @@ class DataEngine:
 
         x_dataset = df[['perf_id', 'ymdms', 'vol_tage', 'am_pere', 'ar_power', 'rat_power',
                         'pw_factor', 'accrue_power', 'voltager_s', 'voltages_t', 'voltaget_r', 'temperature']]
-        y_dataset = df[['atv_power']]
-        print(f"x_dataset: {x_dataset}")
-        print(f"y_dataset: {y_dataset}")
-        self.ann.model_score(x_dataset, y_dataset)
 
-        self.ann.save_model()
-        print(f"first mode: {self.ann}")
-        tmp_ann = ANN_Sample_Model()
-        tmp_ann.load_model()
-        print(f"second model : {tmp_ann}")
+        print("predict ------------------------------")
+        self.ann.predict(x_dataset)
+
+        y_dataset = df[['atv_power']]
+
+
+
+        # # 날짜 설정
+        # req_time = datetime.now() - TEST_TIME - timedelta(days=1)
+        # req_time = req_time.strftime("%Y%m%d")  # 오늘 날짜를 api 형식에 맞게 변형
+        # logger.info(f"{req_time}일차 데이터 조회")
+        # # 데이터 조회
+        # base_query = self.db.select_query(power_info)
+        # query_add_filter = base_query.filter_by(site_id='ace', perf_id=230)
+        # query_add_filter = query_add_filter.filter(power_info.ymdms.like(f"{req_time}%"))
+        # # 해당 데이터 모두 가져와서 dataframe으로 변환
+        # df = self.db.read_dataframe(query_add_filter)
+        #
+        # x_dataset = df[['perf_id', 'ymdms', 'vol_tage', 'am_pere', 'ar_power', 'rat_power',
+        #                 'pw_factor', 'accrue_power', 'voltager_s', 'voltages_t', 'voltaget_r', 'temperature']]
+        # y_dataset = df[['atv_power']]
+        # print(f"x_dataset: {x_dataset}")
+        # print(f"y_dataset: {y_dataset}")
+        # self.ann.model_score(x_dataset, y_dataset)
+        #
+        # self.ann.save_model()
+        # print(f"first mode: {self.ann}")
+        # tmp_ann = ANN_Sample_Model()
+        # tmp_ann.load_model()
+        # print(f"second model : {tmp_ann}")
 
 
