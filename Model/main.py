@@ -8,6 +8,7 @@ from time import sleep
 from settings import IS_MAIN_RUNNING
 from src.Controller.env_import import get_env_bool
 from src.Controller.run_test_code import run_tests
+from src.Engine.MainEngine import MainEngine
 from src.Engine.Planner import schedule_registration
 from src.Controller.Schedule.schedule_manager import MainScheduler
 from src.setting_logger import py_log_settings
@@ -41,11 +42,14 @@ if __name__ == '__main__':
     # start = time.time()  # 시작 시간 저장
 
     # 객체 생성
-    # testEngine = TestEngine()
+    main_engine = MainEngine()
     scheduler = MainScheduler()
 
     # 일정 등록
     schedule_registration(scheduler)
+    
+    logger.info(f"임시 데이터 추가")
+    main_engine.ann_run_test()
 
 
     # 작업 코드
