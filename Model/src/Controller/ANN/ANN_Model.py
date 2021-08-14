@@ -42,8 +42,8 @@ class ANN_Sample_Model:
         return y_predict
 
     def save_chart_img(self, y_predict, y_test_dataset):
-        print(f"y_predict\n {y_predict}")
-        print(f"y_test_dataset\n {y_test_dataset}")
+        print(f"y_predict - {type(y_predict)}\n {y_predict}")
+        print(f"y_test_dataset - {type(y_test_dataset)}\n {y_test_dataset}")
 
         # 그래프
         plt.scatter(y_test_dataset, y_predict, alpha=0.4)
