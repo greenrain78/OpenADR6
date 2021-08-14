@@ -109,3 +109,28 @@ class DataEngineTest(unittest.TestCase):
         self.data_engine.update_elec_remove_all(5)
 
         self.data_engine.ann_run_test()
+
+    @check_time_decorator
+    def test_get_all_eqps(self):
+        # 비교 테스트
+        self.data_engine.update_eqps()
+        base = self.data_engine.get_all_eqps()
+        for i in base:
+            print(i)
+        for i in self.data_engine.get_all_eqps():
+            print(i)
+        self.assertEqual(base, self.data_engine.get_all_eqps())
+        self.assertEqual(base, self.data_engine.get_all_eqps())
+        self.assertEqual(base, self.data_engine.get_all_eqps())
+        self.assertEqual(base, self.data_engine.get_all_eqps())
+        self.assertEqual(base, self.data_engine.get_all_eqps())
+        self.assertEqual(base, self.data_engine.get_all_eqps())
+        self.assertEqual(base, self.data_engine.get_all_eqps())
+        self.assertEqual(base, self.data_engine.get_all_eqps())
+        self.assertEqual(base, self.data_engine.get_all_eqps())
+        self.assertEqual(base, self.data_engine.get_all_eqps())
+        self.assertEqual(base, self.data_engine.get_all_eqps())
+        self.assertEqual(base, self.data_engine.get_all_eqps())
+        self.assertEqual(base, self.data_engine.get_all_eqps())
+        self.assertEqual(base, self.data_engine.get_all_eqps())
+

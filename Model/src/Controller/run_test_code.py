@@ -19,7 +19,7 @@ def run_tests():
         # 테스트 코드 추기
         fast = TestSuite()
         # fast.addTest(EquipmentsInfoTest('test_CRUD_one'))
-        # fast.addTest(DataEngineTest('test_pandas'))
+        # fast.addTest(DataEngineTest('test_get_all_eqps'))
         fast.addTest(MainEngineTest('test_ann_run_test'))
         # 테스트 실행
 

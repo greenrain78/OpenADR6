@@ -51,7 +51,7 @@ class DataEngine:
 
     def get_all_eqps(self):
         base_query = self.db.select_query(equipments_info)
-        eqps_list = self.db.get_obj_all(base_query)
+        eqps_list = self.db.get_obj_all(base_query)[:10]
         return eqps_list
 
     def update_elec(self, before_days: int = 7):
@@ -113,8 +113,7 @@ class DataEngine:
         insert_list = []
         remove_list = []
         # DB에서 장비 데이터 가져오기
-        base_query = self.db.select_query(equipments_info)
-        eqps_list = self.db.get_obj_all(base_query)
+        eqps_list = self.get_all_eqps()
 
         # 지정한 날짜 동안에 대한 데이터 조회
         for day in range(before_days):
@@ -237,7 +236,7 @@ class DataEngine:
         # print(f"second model : {tmp_ann}")
 
     def get_ann_data(self, eqps_info: equipments_info, before_days=7):
-        main_df = pandas.DataFrame()
+        df_list = []
         # 데이터 가져오기
         for day in range(before_days):
             req_time = datetime.now() - timedelta(days=day) - TEST_TIME
@@ -247,8 +246,11 @@ class DataEngine:
             query_add_filter = base_query.filter_by(site_id=eqps_info.site_id, perf_id=eqps_info.perf_id)
             query_add_filter = query_add_filter.filter(power_info.ymdms.like(f"{req_time}%"))
             # 해당 데이터 모두 가져와서 dataframe으로 변환
-            main_df.append(self.db.read_dataframe(query_add_filter))
-        
+            df = self.db.read_dataframe(query_add_filter)
+            df_list.append(df)
+        # 합치기
+        main_df = pandas.concat(df_list)
+
         logger.debug(f"main_df: {main_df}")
         # 데이터 분리
         x_dataset = main_df[['perf_id', 'ymdms', 'vol_tage', 'am_pere', 'ar_power', 'rat_power',

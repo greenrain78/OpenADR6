@@ -144,7 +144,6 @@ class DBAdapterQuery:
         self.session_maker = sessionmaker(bind=self.engine)
         self.session = self.session_maker()
         self.record = Record("DBAdapterQuery")
-        pd.set_option('display.max_columns', None)
 
     def __repr__(self):
         return f"DBAdapter - {self.record}"

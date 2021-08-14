@@ -1,4 +1,5 @@
-﻿from src.Controller.API.adr_api_client import ADR_API_Client
+﻿from src.Controller.ANN.Chart_Maker import ChartMaker
+from src.Controller.API.adr_api_client import ADR_API_Client
 from src.DB.DB_Adapter import DBAdapter
 from src.Engine.DataEngine import DataEngine
 
@@ -8,6 +9,7 @@ class MainEngine:
     def __init__(self, data_engine: DataEngine):
         # DB 데이터 입출력
         self.data_engine = data_engine
+        self.chart_maker = ChartMaker()
 
     def ann_run_test(self):
         # 장비 리스트 갱신
@@ -18,8 +20,15 @@ class MainEngine:
         # 장비 데이터 가져오기
         eqps_list = self.data_engine.get_all_eqps()
         eqps_obj = eqps_list[0]
+        # for eqps_obj in eqps_list[:5]:
         print(f"MainEngine: eqps_obj: {eqps_obj}")
 
         # 데이터 검색
-        data = self.data_engine.get_ann_data(eqps_obj)
+        data = self.data_engine.get_ann_data(eqps_obj, before_days=1)
         print(f"MainEngine: {data}")
+        chart_data = data['y_dataset'].astype(float)
+        self.chart_maker.df_to_line_chart(chart_data, "raw_data_chart1")
+
+            # ann 학습
+
+        # 검증
