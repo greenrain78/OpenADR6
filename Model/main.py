@@ -16,7 +16,6 @@ from src.setting_logger import py_log_settings
 # 로거 생성
 logger = logging.getLogger(__name__)
 
-
 # 메인 프로그램 시작
 if __name__ == '__main__':
     # 디버그를 사용
@@ -47,10 +46,9 @@ if __name__ == '__main__':
 
     # 일정 등록
     schedule_registration(scheduler)
-    
+
     logger.info(f"임시 데이터 추가")
     main_engine.ann_run_test()
-
 
     # 작업 코드
     # print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
