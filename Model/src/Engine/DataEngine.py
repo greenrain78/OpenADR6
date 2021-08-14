@@ -183,4 +183,4 @@ class DataEngine:
         print(f"y_dataset: {y_dataset}")
         self.ann.model_score(x_dataset, y_dataset)
 
-        
+        self.ann.save()
