@@ -35,7 +35,6 @@ class ANN_Sample_Model:
         """
         # 예측 수행
         y_predict = self.model.predict(input_data)
-        y_predict = pd.DataFrame(y_predict)
         # 데이터 출력
         print("predict")
         print(y_predict)
@@ -46,7 +45,7 @@ class ANN_Sample_Model:
         print(f"y_test_dataset - {type(y_test_dataset)} - {len(y_test_dataset)}\n {y_test_dataset}")
 
         # 그래프
-        # plt.scatter(y_predict, y_test_dataset, alpha=0.4)
+        plt.scatter(y_predict, y_test_dataset, alpha=0.4)
         # 빨간 대쉬, 파란 사각형, 녹색 삼각형
         # plt.plot(t, t, 'r--', t, t ** 2, 'bs', t, t ** 3, 'g^')
         plt.xlabel("Actual")
@@ -54,6 +53,20 @@ class ANN_Sample_Model:
         plt.title("test code")
         plt.show()
         plt.savefig(f'{ANN_MODEL_SAVE_PATH}/fig1.png', dpi=300)
+
+    def save_chart_img_line(self, y_predict: pd.DataFrame):
+        """
+        이상하게 빈 화면으로 보임
+        :param y_predict: 
+        :param y_test_dataset: 
+        :return: 
+        """
+        print(f"y_predict - {type(y_predict)} - {len(y_predict)}\n {y_predict}")
+
+        # 그래프
+        fig = y_predict.plot(kind='line').get_figure()
+        fig.savefig(f'{ANN_MODEL_SAVE_PATH}/fig1.png', dpi=300)
+
 
     def save_model(self, filename="model_save1"):
         # 모델 저장
@@ -64,4 +77,3 @@ class ANN_Sample_Model:
     def load_model(self, filename="model_save1"):
         # 모델 불러오기
         self.model = joblib.load(f'{ANN_MODEL_SAVE_PATH}/{filename}.pkl')
-

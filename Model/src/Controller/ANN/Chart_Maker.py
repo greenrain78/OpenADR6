@@ -1,0 +1,2 @@
+﻿class ChartMaker:
+    pass

@@ -2,6 +2,7 @@
 from datetime import datetime, timedelta
 from logging import getLogger
 
+import pandas
 from settings import siteId_list, TEST_TIME
 from src.Controller.ANN.ANN_Model import ANN_Sample_Model
 from src.Controller.API.adr_api_client import ADR_API_Client
@@ -184,11 +185,28 @@ class DataEngine:
         print("predict ------------------------------")
         y_predict = self.ann.predict(x_dataset)
 
-        y_dataset = df[['atv_power']].values
-        self.ann.save_chart_img(y_predict=y_predict, y_test_dataset=y_dataset)
+        # 정수화
+        y_dataset = df[['atv_power']]
+        y_dataset['record'] = pandas.to_numeric(y_dataset['atv_power'])
+        y_dataset['prediction'] = y_predict
+        # self.ann.save_chart_img(y_predict=y_predict, y_test_dataset=y_dataset)
+        self.ann.save_chart_img_line(y_dataset)
 
+        print("model score ----------------------------------------------------------")
+        # 날짜 설정
+        req_time = datetime.now() - TEST_TIME - timedelta(days=2)
+        req_time = req_time.strftime("%Y%m%d")  # 오늘 날짜를 api 형식에 맞게 변형
+        logger.info(f"{req_time}일차 데이터 조회")
+        # 데이터 조회
+        base_query = self.db.select_query(power_info)
+        query_add_filter = base_query.filter_by(site_id='ace', perf_id=230)
+        query_add_filter = query_add_filter.filter(power_info.ymdms.like(f"{req_time}%"))
+        df = self.db.read_dataframe(query_add_filter)
+        x_dataset = df[['perf_id', 'ymdms', 'vol_tage', 'am_pere', 'ar_power', 'rat_power',
+                        'pw_factor', 'accrue_power', 'voltager_s', 'voltages_t', 'voltaget_r', 'temperature']]
+        y_dataset = df[['atv_power']]
 
-
+        self.ann.model_score(x_dataset, y_dataset)
 
         # # 날짜 설정
         # req_time = datetime.now() - TEST_TIME - timedelta(days=1)
@@ -213,5 +231,3 @@ class DataEngine:
         # tmp_ann = ANN_Sample_Model()
         # tmp_ann.load_model()
         # print(f"second model : {tmp_ann}")
-
-
