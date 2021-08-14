@@ -46,7 +46,7 @@ class ANN_Sample_Model:
         print(f"y_test_dataset - {type(y_test_dataset)} - {len(y_test_dataset)}\n {y_test_dataset}")
 
         # 그래프
-        plt.scatter(y_predict, y_test_dataset, alpha=0.4)
+        # plt.scatter(y_predict, y_test_dataset, alpha=0.4)
         # 빨간 대쉬, 파란 사각형, 녹색 삼각형
         # plt.plot(t, t, 'r--', t, t ** 2, 'bs', t, t ** 3, 'g^')
         plt.xlabel("Actual")

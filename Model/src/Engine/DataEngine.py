@@ -184,7 +184,7 @@ class DataEngine:
         print("predict ------------------------------")
         y_predict = self.ann.predict(x_dataset)
 
-        y_dataset = df[['atv_power']]
+        y_dataset = df[['atv_power']].values
         self.ann.save_chart_img(y_predict=y_predict, y_test_dataset=y_dataset)
 
 
