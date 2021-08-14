@@ -52,5 +52,5 @@ class ANN_Sample_Model:
 
     def load_model(self, filename="model_save1"):
         # 모델 불러오기
-        self.model = joblib.load(f'{filename}.pkl')
+        self.model = joblib.load(f'{ANN_MODEL_SAVE_PATH}/{filename}.pkl')
 
