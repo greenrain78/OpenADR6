@@ -3,8 +3,9 @@ from datetime import datetime, timedelta
 from logging import getLogger
 
 from settings import siteId_list, TEST_TIME
+from src.Controller.ANN.ANN_Model import ANN_Sample_Model
 from src.Controller.API.adr_api_client import ADR_API_Client
-from src.DB.DB_Adapter import DBAdapter
+from src.DB.DB_Adapter import DBAdapter, DBAdapterQuery
 from src.DB.model.EquipInfo import equipments_info
 from src.DB.model.PowerInfo import power_info
 
@@ -13,10 +14,11 @@ logger = getLogger(__name__)
 
 class DataEngine:
 
-    def __init__(self, db: DBAdapter):
+    def __init__(self, on_test: bool = False):
         # DB 데이터 입출력
         self.api = ADR_API_Client()
-        self.db = db
+        self.db = DBAdapterQuery(on_test=on_test)
+        self.ann = ANN_Sample_Model()
 
     def update_eqps(self):
         # 장비 데이터 업데이트 확인
@@ -28,7 +30,9 @@ class DataEngine:
 
             for data in data_list:
                 # DB에 있는 데이터 조회
-                fetch_data = self.db.select_filter_one(equipments_info, site_id=site_id, perf_id=data['perfId'])
+                base_query = self.db.select_query(equipments_info)
+                query_add_filter = self.db.add_filter(base_query, site_id=site_id, perf_id=data['perfId'])
+                fetch_data = self.db.get_obj_one(query_add_filter)
                 obj = equipments_info(siteID=site_id, **data)
                 # DB 에 없는 경우 데이터 추가
                 if fetch_data is None:
@@ -51,7 +55,8 @@ class DataEngine:
         insert_list = []
         remove_list = []
         # DB에서 장비 데이터 가져오기
-        eqps_list = self.db.select_all(equipments_info)
+        base_query = self.db.select_query(equipments_info)
+        eqps_list = self.db.get_obj_all(base_query)
 
         # 지정한 날짜 동안에 대한 데이터 조회
         for day in range(before_days):
@@ -69,8 +74,11 @@ class DataEngine:
                     # 데이터 객체 생성
                     api_data = power_info(siteID=eqps_obj.site_id, **raw_data)
                     # db 데이터 가져오기
-                    fetch_data = self.db.select_filter_one(power_info, site_id=eqps_obj.site_id,
-                                                           perf_id=eqps_obj.perf_id, ymdms=api_data.ymdms)
+                    base_query = self.db.select_query(power_info)
+                    query_add_filter = self.db.add_filter(base_query, site_id=eqps_obj.site_id,
+                                                          perf_id=eqps_obj.perf_id, ymdms=api_data.ymdms)
+                    fetch_data = self.db.get_obj_one(query_add_filter)
+
                     # DB에 있는 데이터와 api데이터를 비교
                     # DB에 데이터가 없는 경우 추가
                     if fetch_data is None:
@@ -100,7 +108,8 @@ class DataEngine:
         insert_list = []
         remove_list = []
         # DB에서 장비 데이터 가져오기
-        eqps_list = self.db.select_all(equipments_info)[:10]
+        base_query = self.db.select_query(equipments_info)
+        eqps_list = self.db.get_obj_all(base_query)[:10]
 
         # 지정한 날짜 동안에 대한 데이터 조회
         for day in range(before_days):
@@ -109,8 +118,9 @@ class DataEngine:
             logger.info(f"{req_time}일차 데이터 조회")
 
             # 해당 날짜 Db 데이터 제거
-            tmp_query = self.db.get_query(power_info)
-            old_data = tmp_query.filter(power_info.ymdms.like(f"{req_time}%")).all()
+            base_query = self.db.select_query(power_info)
+            query_add_filter = base_query.filter(power_info.ymdms.like(f"{req_time}%"))
+            old_data = self.db.get_obj_all(query_add_filter)
             print(f"old data : {len(old_data)}")
 
             # 장비 하나씩 데이터 조회
@@ -133,5 +143,44 @@ class DataEngine:
             logger.info(f"api 정보 출력{self.api}")
 
     def ann_run_test(self):
-        df = self.db.read_dataframe(power_info, site_id='ace')
-        print(df)
+        # 날짜 설정
+        req_time = datetime.now() - TEST_TIME
+        req_time = req_time.strftime("%Y%m%d")  # 오늘 날짜를 api 형식에 맞게 변형
+        logger.info(f"{req_time}일차 데이터 조회")
+
+        # 데이터 조회
+        base_query = self.db.select_query(power_info)
+        query_add_filter = base_query.filter_by(site_id='ace', perf_id=230)
+        query_add_filter = query_add_filter.filter(power_info.ymdms.like(f"{req_time}%"))
+        # 해당 데이터 모두 가져와서 dataframe으로 변환
+        data = self.db.get_obj_all(query_add_filter)
+        df = self.db.read_dataframe(query_add_filter)
+
+        print(f"data : {len(data)}")
+        print(len(data))
+        x_dataset = df[['perf_id', 'ymdms', 'vol_tage', 'am_pere', 'ar_power', 'rat_power',
+                        'pw_factor', 'accrue_power', 'voltager_s', 'voltages_t', 'voltaget_r', 'temperature']]
+        y_dataset = df[['atv_power']]
+        print(f"x_dataset: {x_dataset}")
+        print(f"y_dataset: {y_dataset}")
+        self.ann.train(x_dataset, y_dataset)
+
+        # 날짜 설정
+        req_time = datetime.now() - TEST_TIME - timedelta(days=1)
+        req_time = req_time.strftime("%Y%m%d")  # 오늘 날짜를 api 형식에 맞게 변형
+        logger.info(f"{req_time}일차 데이터 조회")
+        # 데이터 조회
+        base_query = self.db.select_query(power_info)
+        query_add_filter = base_query.filter_by(site_id='ace', perf_id=230)
+        query_add_filter = query_add_filter.filter(power_info.ymdms.like(f"{req_time}%"))
+        # 해당 데이터 모두 가져와서 dataframe으로 변환
+        df = self.db.read_dataframe(query_add_filter)
+
+        x_dataset = df[['perf_id', 'ymdms', 'vol_tage', 'am_pere', 'ar_power', 'rat_power',
+                        'pw_factor', 'accrue_power', 'voltager_s', 'voltages_t', 'voltaget_r', 'temperature']]
+        y_dataset = df[['atv_power']]
+        print(f"x_dataset: {x_dataset}")
+        print(f"y_dataset: {y_dataset}")
+        self.ann.model_score(x_dataset, y_dataset)
+
+        

@@ -47,8 +47,8 @@ if __name__ == '__main__':
     # 일정 등록
     schedule_registration(scheduler)
 
-    logger.info(f"임시 데이터 추가")
-    main_engine.ann_run_test()
+    # logger.info(f"임시 데이터 추가")
+    # main_engine.ann_run_test()
 
     # 작업 코드
     # print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간

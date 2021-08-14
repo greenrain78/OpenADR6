@@ -5,7 +5,7 @@ from time import sleep
 
 from settings import siteId_list
 from src.Controller.API.adr_api_client import ADR_API_Client
-from src.DB.DB_Adapter import DBAdapter
+from src.DB.DB_Adapter import DBAdapter, DBAdapterQuery
 from src.DB.model.EquipInfo import equipments_info
 from src.DB.model.PowerInfo import power_info
 from src.Engine.DataEngine import DataEngine
@@ -16,8 +16,8 @@ logger = getLogger(__name__)
 
 class DataEngineTest(unittest.TestCase):
     api = ADR_API_Client()
-    db = DBAdapter(on_test=True)
-    data_engine = DataEngine(db)
+    data_engine = DataEngine(on_test=True)
+    db = DBAdapterQuery(on_test=True)
 
     def setUp(self):
         self.db.clear_table_all(equipments_info)
@@ -106,7 +106,6 @@ class DataEngineTest(unittest.TestCase):
         # 장비 리스트 갱신
         self.data_engine.update_eqps()
         # 장비 정보 업데이트
-        self.data_engine.update_elec_remove_all(1)
+        self.data_engine.update_elec_remove_all(5)
 
         self.data_engine.ann_run_test()
-        sleep(100000)
