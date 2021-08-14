@@ -100,7 +100,7 @@ class DataEngine:
         insert_list = []
         remove_list = []
         # DB에서 장비 데이터 가져오기
-        eqps_list = self.db.select_all(equipments_info)
+        eqps_list = self.db.select_all(equipments_info)[:10]
 
         # 지정한 날짜 동안에 대한 데이터 조회
         for day in range(before_days):

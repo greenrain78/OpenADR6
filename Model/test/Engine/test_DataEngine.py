@@ -106,6 +106,7 @@ class DataEngineTest(unittest.TestCase):
         # 장비 리스트 갱신
         self.data_engine.update_eqps()
         # 장비 정보 업데이트
-        self.data_engine.update_elec_remove_all(3)
+        self.data_engine.update_elec_remove_all(1)
 
         self.data_engine.ann_run_test()
+        sleep(100000)
