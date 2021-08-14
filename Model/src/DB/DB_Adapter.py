@@ -2,11 +2,9 @@
 DB 와 연결하는 부분
 """
 from logging import getLogger
-from typing import Union
-import time
+import pandas as pd
 
 from sqlalchemy.engine.create import create_engine
-from sqlalchemy.orm.loading import instances
 from sqlalchemy.orm.session import sessionmaker
 
 from settings import IS_SQL_ECHO, DATABASES
@@ -115,6 +113,11 @@ class DBAdapter(object):
         else:
             self.session.delete(obj)
 
+    @record_decorator
+    def read_dataframe(self, model, **filter_list):
+        data = pd.read_sql(self.session.query(model).filter_by(**filter_list).statement, self.session.bind)
+        return data
+
     def clear_table_all(self, model):
         self.session.query(model).delete()
         self.session.commit()
@@ -127,4 +130,3 @@ class DBAdapter(object):
     def commit(self):
         # 객체를 업데이트 후 반영
         self.session.commit()
-

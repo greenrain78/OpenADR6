@@ -133,4 +133,5 @@ class DataEngine:
         logger.info(f"elec 데이터 업데이트 - 추가: {len(insert_list)}, 갱신: {len(remove_list) - len(insert_list)}")
 
     def ann_run_test(self):
-        pass
+        df = self.db.read_dataframe(power_info, site_id='ace')
+        print(df)

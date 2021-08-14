@@ -6,7 +6,7 @@ from sklearn.linear_model import LinearRegression
 import joblib
 
 
-def train():
+def train(x_dataset, y_dataset):
     # load data
     dataset = pd.read_csv('ANN/api_sample_data_0307.csv', encoding='utf-8')  # 20210307 데이터
     test_dataset = pd.read_csv('ANN/api_sample_data_0308.csv', encoding='utf-8')  # 20210307 데이터

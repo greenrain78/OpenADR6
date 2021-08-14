@@ -74,13 +74,13 @@ class DataEngineTest(unittest.TestCase):
     #     self.data_engine.update_eqps()
     #     # 장비 정보 업데이트
     #     self.data_engine.update_elec()
-        # print("----------")
-        # sleep(1)
-        # self.data_engine.update_elec(1)
+    # print("----------")
+    # sleep(1)
+    # self.data_engine.update_elec(1)
 
-        # print("end not")
-        # while True:
-        #     pass
+    # print("end not")
+    # while True:
+    #     pass
 
     @check_time_decorator
     def test_update_elec_remove_all(self):
@@ -99,3 +99,13 @@ class DataEngineTest(unittest.TestCase):
         # print("end not")
         # while True:
         #     pass
+
+    @check_time_decorator
+    def test_pandas(self):
+
+        # 장비 리스트 갱신
+        self.data_engine.update_eqps()
+        # 장비 정보 업데이트
+        self.data_engine.update_elec_remove_all(3)
+
+        self.data_engine.ann_run_test()
