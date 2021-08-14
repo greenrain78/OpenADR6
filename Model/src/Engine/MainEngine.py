@@ -24,7 +24,7 @@ class MainEngine:
         print(f"MainEngine: eqps_obj: {eqps_obj}")
 
         # 데이터 검색
-        data = self.data_engine.get_ann_data(eqps_obj, before_days=1)
+        data = self.data_engine.get_ann_data(eqps_obj)
         print(f"MainEngine: {data}")
         chart_data = data['y_dataset'].astype(float)
         self.chart_maker.df_to_line_chart(chart_data, "raw_data_chart1")
