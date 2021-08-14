@@ -183,4 +183,10 @@ class DataEngine:
         print(f"y_dataset: {y_dataset}")
         self.ann.model_score(x_dataset, y_dataset)
 
-        self.ann.save()
+        self.ann.save_model()
+        print(f"first mode: {self.ann}")
+        tmp_ann = ANN_Sample_Model()
+        tmp_ann.load_model()
+        print(f"second model : {tmp_ann}")
+
+

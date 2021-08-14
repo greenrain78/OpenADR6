@@ -18,11 +18,9 @@ class ANN_Sample_Model:
         self.model.fit(x_dataset, y_dataset)
         print(self.model.coef_)
 
-    def save(self):
-        # 모델 저장
-        # joblib(model, 'model_save1.pkl') # 오류로 해당 모듈을 사용 불가
-        with open(f'{ANN_MODEL_SAVE_PATH}/model_save1.pkl', 'wb') as model_file:
-            pickle.dump(self.model, model_file)
+    def __repr__(self):
+        return f"ANN_Sample_Model: {self.model}\n" \
+               f"{self.model.coef_}"
 
     def model_score(self, x_dataset, y_dataset):
         # 예측
@@ -46,8 +44,13 @@ class ANN_Sample_Model:
         print(model.coef_)
         print(model.score(x_score_dataset, y_score_dataset))
 
-    def save_model(self, model):
-        pass
+    def save_model(self, filename="model_save1"):
+        # 모델 저장
+        # joblib(model, 'model_save1.pkl') # 오류로 해당 모듈을 사용 불가
+        with open(f'{ANN_MODEL_SAVE_PATH}/{filename}.pkl', 'wb') as model_file:
+            pickle.dump(self.model, model_file)
 
-    def load_model(self, model):
-        pass
+    def load_model(self, filename="model_save1"):
+        # 모델 불러오기
+        self.model = joblib.load(f'{filename}.pkl')
+
