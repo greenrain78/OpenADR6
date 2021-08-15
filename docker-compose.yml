@@ -103,3 +103,5 @@ services:
       - Model/model-variables.env
     depends_on:
       - backend
+      - db
+      - db_test
