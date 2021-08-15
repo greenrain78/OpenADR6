@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # start = time.time()  # 시작 시간 저장
 
     # 객체 생성
-    # main_engine = MainEngine()
+    main_engine = MainEngine()
     # scheduler = MainScheduler()
     #
     # # 일정 등록
@@ -51,6 +51,7 @@ if __name__ == '__main__':
     # main_engine.ann_run_test()
 
     # 작업 코드
+    main_engine.dev_run()
     # print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
     # 임시로
     while IS_MAIN_RUNNING:
