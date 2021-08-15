@@ -21,8 +21,11 @@ class MainEngine:
     def dev_run(self):
         # 일단 데이터 생성
         # 장비 리스트 갱신
-        self.data_engine.update_eqps()
+        # self.data_engine.update_eqps()
         # 장비 정보 업데이트
+        # 일주일치
+        self.data_engine.update_elec_remove_all()
+
         pass
 
     def ann_run_test(self):
