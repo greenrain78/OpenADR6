@@ -42,10 +42,10 @@ if __name__ == '__main__':
 
     # 객체 생성
     # main_engine = MainEngine()
-    scheduler = MainScheduler()
-
-    # 일정 등록
-    schedule_registration(scheduler)
+    # scheduler = MainScheduler()
+    #
+    # # 일정 등록
+    # schedule_registration(scheduler)
 
     # logger.info(f"임시 데이터 추가")
     # main_engine.ann_run_test()

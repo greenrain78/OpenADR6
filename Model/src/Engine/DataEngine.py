@@ -51,7 +51,8 @@ class DataEngine:
 
     def get_all_eqps(self):
         base_query = self.db.select_query(equipments_info)
-        eqps_list = self.db.get_obj_all(base_query)
+        eqps_list = self.db.get_obj_all(base_query)[:10]
+        # eqps_list = self.db.get_obj_all(base_query)
         return eqps_list
 
     def update_elec(self, before_days: int = 7):
@@ -252,7 +253,7 @@ class DataEngine:
         # 합치기
         main_df = pandas.concat(df_list)
 
-        logger.debug(f"main_df: {main_df.info()}")
+        # logger.debug(f"main_df: {main_df.info()}")
         # 데이터 분리
         x_dataset = main_df[['perf_id', 'ymdms', 'vol_tage', 'am_pere', 'ar_power', 'rat_power',
                              'pw_factor', 'accrue_power', 'voltager_s', 'voltages_t', 'voltaget_r', 'temperature']]

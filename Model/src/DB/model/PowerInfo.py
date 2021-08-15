@@ -43,17 +43,17 @@ class power_info(Base):
         self.eqp_name = eqpName
         self.ymdms = ymdms
 
-        self.vol_tage = volTage
-        self.am_pere = amPere
-        self.ar_power = arPower
-        self.atv_power = atvPower
-        self.rat_power = ratPower
-        self.pw_factor = pwFactor
-        self.accrue_power = accruePower
-        self.voltager_s = voltagerS
-        self.voltages_t = voltagesT
-        self.voltaget_r = voltagetR
-        self.temperature = temperature
+        self.vol_tage = float(volTage)
+        self.am_pere = float(amPere)
+        self.ar_power = float(arPower)
+        self.atv_power = float(atvPower)
+        self.rat_power = float(ratPower)
+        self.pw_factor = float(pwFactor)
+        self.accrue_power = int(accruePower)
+        self.voltager_s = float(voltagerS)
+        self.voltages_t = float(voltagesT)
+        self.voltaget_r = float(voltagetR)
+        self.temperature = float(temperature)
 
         self.created_at = datetime.now()
 
