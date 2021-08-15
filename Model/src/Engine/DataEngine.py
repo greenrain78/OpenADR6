@@ -121,13 +121,16 @@ class DataEngine:
             insert_list = []
             remove_list = []
 
-            req_time = datetime.now() - timedelta(days=day) - TEST_TIME
-            req_time = req_time.strftime("%Y%m%d")  # 오늘 날짜를 api 형식에 맞게 변형
+            req_datetime = datetime.now() - timedelta(days=day) - TEST_TIME
+            req_time = req_datetime.strftime("%Y%m%d")  # 오늘 날짜를 api 형식에 맞게 변형
             logger.info(f"{req_time}일차 데이터 조회")
 
             # 해당 날짜 Db 데이터 제거
             base_query = self.db.select_query(power_info)
-            query_add_filter = base_query.filter(power_info.ymdms.like(f"{req_time}%"))
+            # query_add_filter = base_query.filter(power_info.ymdms.like(f"{req_time}%"))
+            query_add_filter = base_query.filter(
+                power_info.ymdms + timedelta(days=1) > req_datetime
+            )
             old_data = self.db.get_obj_all(query_add_filter)
             print(f"old data : {len(old_data)}")
 
