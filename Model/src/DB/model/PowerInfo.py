@@ -41,7 +41,7 @@ class power_info(Base):
         self.perf_id = int(perfId)
         self.pn_name = pnName
         self.eqp_name = eqpName
-        self.ymdms = ymdms
+        self.ymdms = datetime.strptime(ymdms, "%Y%m%d%H%M%S")
 
         self.vol_tage = float(volTage)
         self.am_pere = float(amPere)
@@ -49,7 +49,7 @@ class power_info(Base):
         self.atv_power = float(atvPower)
         self.rat_power = float(ratPower)
         self.pw_factor = float(pwFactor)
-        self.accrue_power = int(accruePower)
+        self.accrue_power = float(accruePower)
         self.voltager_s = float(voltagerS)
         self.voltages_t = float(voltagesT)
         self.voltaget_r = float(voltagetR)
@@ -70,18 +70,18 @@ class power_info(Base):
         # 동일 객체인지 확인
         # 시간 요소 배제
         return self.site_id == other.site_id \
-                 and self.perf_id == other.perf_id \
-                 and self.pn_name == other.pn_name \
-                 and self.eqp_name == other.eqp_name \
-                 and self.ymdms == other.ymdms \
-                 and self.vol_tage == other.vol_tage \
-                 and self.am_pere == other.am_pere \
-                 and self.ar_power == other.ar_power \
-                 and self.atv_power == other.atv_power \
-                 and self.rat_power == other.rat_power \
-                 and self.pw_factor == other.pw_factor \
-                 and self.accrue_power == other.accrue_power \
-                 and self.voltager_s == other.voltager_s \
-                 and self.voltages_t == other.voltages_t \
-                 and self.voltaget_r == other.voltaget_r \
-                 and self.temperature == other.temperature
+               and self.perf_id == other.perf_id \
+               and self.pn_name == other.pn_name \
+               and self.eqp_name == other.eqp_name \
+               and self.ymdms == other.ymdms \
+               and self.vol_tage == other.vol_tage \
+               and self.am_pere == other.am_pere \
+               and self.ar_power == other.ar_power \
+               and self.atv_power == other.atv_power \
+               and self.rat_power == other.rat_power \
+               and self.pw_factor == other.pw_factor \
+               and self.accrue_power == other.accrue_power \
+               and self.voltager_s == other.voltager_s \
+               and self.voltages_t == other.voltages_t \
+               and self.voltaget_r == other.voltaget_r \
+               and self.temperature == other.temperature
