@@ -2,7 +2,7 @@ import os
 from datetime import timedelta
 
 IS_SQL_ECHO = False
-IS_MAIN_RUNNING = False
+IS_MAIN_RUNNING = True
 IS_RUN_ALL_TEST = False
 TEST_TIME = timedelta(days=365)
 ANN_MODEL_SAVE_PATH = "file_data/ANN"

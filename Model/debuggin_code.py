@@ -1,5 +1,7 @@
 ﻿import functools
 
+from src.Controller.Schedule.schedule_manager import MainScheduler
+
 
 def debugging(func):
     """디버깅용 코드 해당 함수에 대한 정보 확인"""
@@ -25,31 +27,49 @@ def decorator_base(func=None, **decorator_base_kwargs):
     # 속성을 기입 - > wrapper 로 감싼후 decorator 호출
     else:
         # 아무 인자도 들어오지 않음
-        def base_wrapper(function):
+        def base_wrapper(function, *args, **kwargs):
+            print("call base_wrapper")
+            print(f"args : {args}")
+            print(f"kwargs : {kwargs}")
             # 이중 Decorator 해결
             wrapped = decorators_class(function, **decorator_base_kwargs)()
             return wrapped
+
         return base_wrapper
 
 
 # 실행 시 에만 동작
 class decorators_class(object):
+    scheduler = MainScheduler('debug scheduler')
+
     # Decorator 생성
     # args 사용 금지 - 불가능
     def __init__(self, func, **init_kwargs):
         self.func = func
-        self.flag = init_kwargs['flag']
+        self.args = init_kwargs
+        print(f"init_kwargs : {init_kwargs}")
 
     # Decorator 호출
-    def __call__(self):
+    def __call__(self, *call_args, **call_kwargs):
         decorator_self = self
+        print("call decorators_class call")
+        print(f"call_args : {call_args}")
+        print(f"call_kwargs : {call_kwargs}")
+        print(f"self.scheduler : {self.scheduler.name}")
+        self.scheduler.create_job(self.func, self.func.__name__,  self.scheduler, **self.args)
 
-        # 함수 데코레이터
+        # 함수 Decorator 실행
         def wrapper(*args, **kwargs):
+            print("call decorators_class")
+            print(f"args : {args}")
+            print(f"kwargs : {kwargs}")
             function = self.func(*args, **kwargs)
             return function
 
         return wrapper
+
+
+t = decorators_class(debugging)
 
 # 추후 디버그용 보존
 # # 속성 유무 분류
