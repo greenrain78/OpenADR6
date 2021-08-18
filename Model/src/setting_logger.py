@@ -57,15 +57,24 @@ config = {
         "__main__": {
             "level": "DEBUG",
             "handlers": ["console", "warning_file", "rotation_file", "all_file"],
+            "propagate": False,
         },
         "src": {
             "level": "DEBUG",
             "handlers": ["console", "warning_file", "rotation_file", "all_file"],
+            "propagate": False,
         },
         "test": {
             "level": "DEBUG",
             "handlers": ["console", "warning_file", "rotation_file", "all_file"],
+            "propagate": False,
         },
+        "apscheduler": {
+            "level": "DEBUG",
+            "handlers": ["console", "warning_file", "rotation_file", "all_file"],
+            "propagate": False,
+        },
+
     },
 }
 
@@ -88,12 +97,24 @@ class py_log_settings(log_settings):
             handlers = cls.log_config.get("handlers")
             console_handler = handlers.get("console")
             console_handler["level"] = "DEBUG"
+
+            loggers = cls.log_config.get("loggers")
+            root_loggers = loggers.get("")
+            root_loggers["level"] = "DEBUG"
+            root_loggers["handlers"] = ["console"]
         else:
             handlers = cls.log_config.get("handlers")
             console_handler = handlers.get("console")
-            console_handler["level"] = "INFO"
+            console_handler["handlers"] = "INFO"
 
         cls.initialize(cls)
+
+    def change_config(self, key, *args):
+        select = self.log_config
+        for arg in args:
+            select = select.get(arg)
+
+        pass
 
 
 def open_log_setting_json():
