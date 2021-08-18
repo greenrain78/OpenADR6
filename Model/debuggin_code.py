@@ -17,6 +17,40 @@ def debugging(func):
     return wrapper_debug
 
 
+# args 사용 불가 - 중요!
+def decorator_base(func=None, **decorator_base_kwargs):
+    # 속성을 미기입 - > decorator 호출
+    if func:
+        return decorators_class(func, **decorator_base_kwargs)
+    # 속성을 기입 - > wrapper 로 감싼후 decorator 호출
+    else:
+        # 아무 인자도 들어오지 않음
+        def base_wrapper(function):
+            # 이중 Decorator 해결
+            wrapped = decorators_class(function, **decorator_base_kwargs)()
+            return wrapped
+        return base_wrapper
+
+
+# 실행 시 에만 동작
+class decorators_class(object):
+    # Decorator 생성
+    # args 사용 금지 - 불가능
+    def __init__(self, func, **init_kwargs):
+        self.func = func
+        self.flag = init_kwargs['flag']
+
+    # Decorator 호출
+    def __call__(self):
+        decorator_self = self
+
+        # 함수 데코레이터
+        def wrapper(*args, **kwargs):
+            function = self.func(*args, **kwargs)
+            return function
+
+        return wrapper
+
 # 추후 디버그용 보존
 # # 속성 유무 분류
 # # args 사용 불가 - 중요!
