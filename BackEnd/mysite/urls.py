@@ -20,5 +20,6 @@ from django.urls.conf import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/", include("app_collect.urls")),
+    path('predict/', include('app_expect.urls')),
 
 ]
