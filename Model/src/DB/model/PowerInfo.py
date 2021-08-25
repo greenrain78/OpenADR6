@@ -14,7 +14,7 @@ class power_info(Base):
 
     pn_name = Column(String)
     eqp_name = Column(String)
-    ymdms = Column(String)
+    ymdms = Column(DateTime)
 
     vol_tage = Column(String)
     am_pere = Column(String)

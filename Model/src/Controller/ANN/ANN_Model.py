@@ -1,6 +1,8 @@
 import pickle
-
+import logging
 import matplotlib.pyplot as plt
+
+logger = logging.getLogger(__name__)
 
 import joblib
 import pandas as pd
@@ -9,7 +11,12 @@ from sklearn.linear_model import LinearRegression
 from settings import ANN_MODEL_SAVE_PATH
 
 
-class ANN_Sample_Model:
+class PredictBaseModel:
+    pass
+
+
+class ANN_Sample_Model(PredictBaseModel):
+
     def __init__(self):
         self.model = LinearRegression()
 
@@ -17,18 +24,18 @@ class ANN_Sample_Model:
         # 훈련
 
         self.model.fit(x_dataset, y_dataset)
-        print(self.model.coef_)
+        logger.debug(self.model.coef_)
 
     def __repr__(self):
-        return f"ANN_Sample_Model: {self.model}\n" \
+        return f"{self.__class__.__name__}: {self.model}\n" \
                f"{self.model.coef_}"
 
     def model_score(self, x_dataset, y_dataset):
         # 예측
         # y_predict = model.predict(x_test_dataset)
 
-        print(self.model.coef_)
-        print(self.model.score(x_dataset, y_dataset))
+        logger.info(self.model.coef_)
+        logger.info(self.model.score(x_dataset, y_dataset))
 
     def predict(self, input_data: pd.DataFrame):
         """
@@ -36,8 +43,8 @@ class ANN_Sample_Model:
         # 예측 수행
         y_predict = self.model.predict(input_data)
         # 데이터 출력
-        print("predict")
-        print(y_predict)
+        logger.debug("predict")
+        logger.debug(y_predict)
         return y_predict
 
     def save_model(self, filename="model_save1"):

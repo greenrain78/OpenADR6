@@ -70,7 +70,7 @@ config = {
             "propagate": False,
         },
         "apscheduler": {
-            "level": "DEBUG",
+            "level": "INFO",
             "handlers": ["console", "warning_file", "rotation_file", "all_file"],
             "propagate": False,
         },

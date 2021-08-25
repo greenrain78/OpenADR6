@@ -18,7 +18,7 @@ class MainScheduler:
         self.schedule = BackgroundScheduler()
         log.info(f"SchedulerManager init Schedule : {self.name}")
 
-    def create_job(self, method, schedule_id: str, *method_args, **schedule_time):
+    def create_job(self, method, schedule_id: str, **schedule_time):
         """
         반복적으로 실행할 작업 생성
         :param method: 실행할 함수
@@ -26,12 +26,24 @@ class MainScheduler:
         :param schedule_time: dict 형식의 시간 인자 - cron 참고
         :return:
         """
+        self.schedule.add_job(method, 'cron', id=schedule_id, **schedule_time)
+        log.debug(f"SchedulerManager create_job : {schedule_id}")
+
+    def create_job_method(self, method, schedule_id: str, *method_args_self, **schedule_time):
+        """
+        반복적으로 실행할 작업 생성
+        :param method: 실행할 함수
+        :param schedule_id: str
+        :param method_args_self: self를 전달해야 하지만 객체가 튜플로 packing을 할 수 없는 문제로 위와 같이 작성성
+       :param schedule_time: dict 형식의 시간 인자 - cron 참고
+        :return:
+        """
         print(f"method : {method}")
         print(f"schedule_id : {schedule_id}")
-        print(f"method_args : {method_args}")
+        print(f"method_args : {method_args_self}")
         print(f"schedule_time : {schedule_time}")
 
-        self.schedule.add_job(method, 'cron',  method_args, id=schedule_id, **schedule_time)
+        self.schedule.add_job(method, 'cron',  method_args_self, id=schedule_id, **schedule_time)
         log.debug(f"SchedulerManager create_job : {schedule_id}")
 
     def delete_job(self, schedule_id: str):
@@ -85,14 +97,13 @@ class schedule_decorators(object):
     # Decorator 호출
     def __call__(self):
         decorator_self = self
-        print(f"self.scheduler : {self.scheduler.name}")
+        log.debug(f"scheduler({self.scheduler.name}) add job {self.func.__name__} - {self.args}")
 
         # 스캐줄러 등록
-        self.scheduler.create_job(self.func, self.func.__name__,  self.scheduler, **self.args)
+        self.scheduler.create_job_method(self.func, self.func.__name__,  self.scheduler, **self.args)
 
         # 함수 Decorator 실행
         def wrapper(*args, **kwargs):
-            print("call decorators_class")
             function = self.func(*args, **kwargs)
             return function
 

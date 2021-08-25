@@ -61,8 +61,12 @@ class DataEngine:
         """
         insert_list = []
         remove_list = []
+
         # DB에서 장비 데이터 가져오기
         eqps_list = self.get_all_eqps()
+
+        # # 장비 하나씩 데이터 조회
+        # for eqps_obj in eqps_list:
 
         # 지정한 날짜 동안에 대한 데이터 조회
         for day in range(before_days):
@@ -243,6 +247,29 @@ class DataEngine:
         # print(f"second model : {tmp_ann}")
 
     def get_ann_data(self, eqps_info: equipments_info, before_days=7):
+        df_list = []
+        # 데이터 가져오기
+        search_time = datetime.now() - timedelta(days=before_days)
+        base_query = self.db.select_query(power_info)
+        # 해당 장비 데이터만 선별
+        base_query = base_query.filter_by(site_id=eqps_info.site_id, perf_id=eqps_info.perf_id)
+        #
+        base_query = base_query.filter(power_info.ymdms < search_time)
+        data_df = self.db.read_dataframe(base_query)
+        logger.debug(f"data_df: {data_df.info()}")
+
+        # 데이터 분리
+        x_dataset = data_df[['perf_id', 'ymdms', 'vol_tage', 'am_pere', 'ar_power', 'rat_power',
+                             'pw_factor', 'accrue_power', 'voltager_s', 'voltages_t', 'voltaget_r', 'temperature']]
+        y_dataset = data_df[['atv_power']]
+        # packing
+        result = {
+            "x_dataset": x_dataset,
+            "y_dataset": y_dataset,
+        }
+        return result
+
+    def get_ann_data_old(self, eqps_info: equipments_info, before_days=7):
         df_list = []
         # 데이터 가져오기
         for day in range(before_days):

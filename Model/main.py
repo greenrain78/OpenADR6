@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 import logging.config
 import os
+import time
 import unittest
 
 from time import sleep
@@ -40,13 +41,15 @@ if __name__ == '__main__':
     # else:
     #     logger.info('test 코드 미실행')
 
-    # start = time.time()  # 시작 시간 저장
+    start = time.time()  # 시작 시간 저장
 
     # 객체 생성
-    test_engine = TestEngine()
-    data_engine = DataEngine()
-    main_engine = MainEngine(data_engine)
-    # scheduler = MainScheduler()
+    # test_engine = TestEngine()
+    # data_engine = DataEngine()
+    # main_engine = MainEngine(data_engine)
+    # # scheduler = MainScheduler()
+    #
+    # main_engine.ann_train_test()
     #
     # # 일정 등록
     # schedule_registration(scheduler)
@@ -56,7 +59,7 @@ if __name__ == '__main__':
     schedule_decorators.run_schedule()
     # 작업 코드
     # main_engine.dev_run()
-    # print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
+    print("main run time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
     # 임시로
     while IS_MAIN_RUNNING:
         logger.debug('프로그램 실행중')
