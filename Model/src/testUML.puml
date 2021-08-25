@@ -1,0 +1,38 @@
+@startuml
+
+title docker 데이터 전달 구조
+
+FrontEnd <|-- Backend
+FrontEndDev <|-- Backend
+Backend <|-- DB
+Backend <|-- TestDB
+
+DB <|-- Model
+TestDB <|-- Model
+Model <|-- Model
+
+
+class Backend {
+    DB의 데이터를 가공하여 FrontEnd로 전달
+    API 요청시 데이터 전달
+}
+class DB {
+    Model로 부터 받은 데이터를 저장
+    요청시 Django로 데이터 전송
+}
+class TestDB {
+    Model로 부터 받은 데이터를 저장
+    요청시 Django로 데이터 전송
+}
+class FrontEnd {
+    Django로 부터 받은 데이터를 전시
+}
+class FrontEndDev {
+    Django로 부터 받은 데이터를 전시
+}
+class Model {
+    API를 통해 데이터 가져와 DB에 저장
+}
+
+@enduml
+
