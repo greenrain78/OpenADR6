@@ -1,5 +1,6 @@
 from typing import List
 
+from settings import IS_DEBUG, IS_RUN_SERVER
 from src.Controller.Schedule.schedule_manager import MainScheduler
 from src.Engine.DataEngine import DataEngine
 from src.Engine.MainEngine import MainEngine
@@ -22,13 +23,16 @@ class PlanerScheduler:
         # 예시) 매 0초에 hello 출력
         self.scheduler.create_job(test_hello, "ex hello", second=0)
 
-        # 테스트를 위한 8초에 hello 출력
-        self.scheduler.create_job(self.test_engine.print_hello, "test hello 8", second=8)
-        # eqps 업데이트
-        self.scheduler.create_job(self.data_engine.update_eqps, minute=0)
-        # elec 업데이트
-        self.scheduler.create_job(self.data_engine.update_elec, minute=0)
-        # 임시 예측 알고리즘
+        if IS_DEBUG:
+            # 테스트를 위한 8초에 hello 출력
+            self.scheduler.create_job(self.test_engine.print_hello, "test hello 8", second=8)
+
+        if IS_RUN_SERVER:
+            # eqps 업데이트
+            self.scheduler.create_job(self.data_engine.update_eqps, minute=0)
+            # elec 업데이트
+            self.scheduler.create_job(self.data_engine.update_elec, minute=0)
+            # 임시 예측 알고리즘
 
     def run(self):
         self.scheduler.run()

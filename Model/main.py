@@ -1,15 +1,11 @@
 # -*- encoding: utf-8 -*-
 import logging.config
 import time
-
 from time import sleep
 
 from settings import IS_MAIN_RUNNING, IS_DEBUG, IS_RUN_TEST
-from src.Controller.env_import import get_env_bool
 from src.Controller.run_test_code import run_tests
-from src.Controller.Schedule.schedule_manager import schedule_decorators, MainScheduler
-from src.Engine.PredictRunEngine import PredictControllerEngine
-from src.Predict.Planner import schedule_registration, PlanerScheduler
+from src.Predict.Planner import PlanerScheduler
 from src.setting_logger import py_log_settings
 
 # 로거 생성
