@@ -3,7 +3,6 @@ Schedule DB SchedulerManager
 실질적인 스캐줄 객체
 """
 import logging
-import time
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -18,15 +17,18 @@ class MainScheduler:
         self.schedule = BackgroundScheduler()
         log.info(f"SchedulerManager init Schedule : {self.name}")
 
-    def create_job(self, method, schedule_id: str, **schedule_time):
+    def create_job(self, func, schedule_id: str = None, **schedule_time):
         """
         반복적으로 실행할 작업 생성
-        :param method: 실행할 함수
+        :param func: 실행할 함수
         :param schedule_id: str
         :param schedule_time: dict 형식의 시간 인자 - cron 참고
         :return:
         """
-        self.schedule.add_job(method, 'cron', id=schedule_id, **schedule_time)
+        if schedule_id is None:
+            self.schedule.add_job(func, 'cron', id=func.__name__, **schedule_time)
+        else:
+            self.schedule.add_job(func, 'cron', id=schedule_id, **schedule_time)
         log.debug(f"SchedulerManager create_job : {schedule_id}")
 
     def create_job_method(self, method, schedule_id: str, *method_args_self, **schedule_time):

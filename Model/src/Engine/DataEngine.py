@@ -13,6 +13,9 @@ logger = getLogger(__name__)
 
 
 class DataEngine:
+    """
+    데이터와 관련된 작업을 하는 엔진
+    """
 
     def __init__(self, on_test: bool = False):
         # DB 데이터 입출력
