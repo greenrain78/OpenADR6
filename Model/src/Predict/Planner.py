@@ -1,3 +1,4 @@
+from logging import getLogger
 from typing import List
 
 from settings import IS_DEBUG, IS_RUN_SERVER
@@ -5,6 +6,8 @@ from src.Controller.Schedule.schedule_manager import MainScheduler
 from src.Engine.DataEngine import DataEngine
 from src.Engine.MainEngine import MainEngine
 from src.Engine.TestEngine import TestEngine
+
+logger = getLogger(__name__)
 
 
 class PlanerScheduler:
@@ -15,6 +18,7 @@ class PlanerScheduler:
         self.data_engine = DataEngine()
         self.main_engine = MainEngine(self.data_engine)
         self.scheduler = MainScheduler('Main')
+        logger.info(f"PlanerScheduler init 및 객체 생성")
 
     def schedule_registration(self):
         """
@@ -29,14 +33,14 @@ class PlanerScheduler:
 
         if IS_RUN_SERVER:
             # eqps 업데이트
-            self.scheduler.create_job(self.data_engine.update_eqps, minute=0)
+            self.scheduler.create_job(self.data_engine.update_eqps, hour=12)
             # elec 업데이트
-            self.scheduler.create_job(self.data_engine.update_elec, minute=0)
+            self.scheduler.create_job(self.data_engine.update_elec_remove_all, hour=12)
             # 임시 예측 알고리즘
 
     def run(self):
         self.scheduler.run()
-
+        logger.info(f"PlanerScheduler 실행")
 
 def test_hello():
     # 안녕

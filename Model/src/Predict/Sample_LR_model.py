@@ -3,6 +3,8 @@ import logging
 import pandas as pd
 
 from src.Controller.ANN.ANN_Model import PredictBaseModel
+from src.Controller.Schedule.schedule_manager import add_schedule
+
 logger = logging.getLogger(__name__)
 
 

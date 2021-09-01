@@ -40,6 +40,7 @@ if __name__ == '__main__':
     start = time.time()  # 시작 시간 저장
     # 스케줄러 생성
     scheduler = PlanerScheduler()
+    scheduler.schedule_registration()
     scheduler.run()
 
     ############################################################################################
