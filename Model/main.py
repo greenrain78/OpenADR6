@@ -13,6 +13,7 @@ from src.Engine.DataEngine import DataEngine
 from src.Engine.MainEngine import MainEngine
 from src.Engine.Planner import schedule_registration
 from src.Controller.Schedule.schedule_manager import MainScheduler, schedule_decorators
+from src.Engine.PredictRunEngine import PredictControllerEngine
 from src.Engine.TestEngine import TestEngine
 from src.setting_logger import py_log_settings
 
@@ -48,6 +49,11 @@ if __name__ == '__main__':
     # data_engine = DataEngine()
     # main_engine = MainEngine(data_engine)
     # # scheduler = MainScheduler()
+    PC_Engine = PredictControllerEngine()
+    PC_Engine.run_LR_model()
+    # PC_Engine.run_LSTM_model()
+
+
     #
     # main_engine.ann_train_test()
     #

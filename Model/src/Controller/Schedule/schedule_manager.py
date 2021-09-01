@@ -72,6 +72,7 @@ def schedule_start():
 def add_schedule(func=None, **decorator_base_kwargs):
     # 속성을 미기입 - > decorator 호출
     if func:
+        print(f"add_schedule func - {type(func)}", flush=True)
         return schedule_decorators(func, **decorator_base_kwargs)
     # 속성을 기입 - > wrapper 로 감싼후 decorator 호출
     else:

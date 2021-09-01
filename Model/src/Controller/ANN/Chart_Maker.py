@@ -15,6 +15,12 @@ class ChartMaker:
     def __init__(self):
         self.path = CHART_SAVE_PATH
 
+    def chart_save_fig(self, filename):
+        plt.savefig(f'{self.path}/{filename}.png', dpi=300)
+
+    # def chart_save_fig(self, filename):
+    #     fig.savefig(f'{self.path}/{filename}.png', dpi=300)
+
     def df_to_line_chart(self, df: pandas.DataFrame, filename):
         """
         이상하게 빈 화면으로 보임
@@ -61,16 +67,18 @@ class ChartMaker:
         plt.savefig(f'{self.path}/{filename}.png', dpi=300)
 
     def multi_line_chart(self, data_list, filename):
+        print(f"data_list ----------- {type(data_list)}\n"
+              f"{data_list}")
         for data in data_list:
-            print(data.ymdms)
-            print(type(data.ymdms))
+            print(f"data ----------- {type(data)}\n"
+                  f"{data}")
+            print(f"index : {data.index}")
             # 내가 사용한 돈을 그래프로 그립니다
-            plt.plot(data.ymdms, data.atv_power, color=numpy.random.rand(3))
+            plt.plot(data.index, data[0], color=numpy.random.rand(3))
 
-        print(f"multi_line_chart: data len {len(data_list)}")
-        plt.title('Line Graph w/ different markers and colors', fontsize=20)
-        plt.ylabel('Cummulative Num', fontsize=14)
-        plt.xlabel('Date', fontsize=14)
+        plt.title(f'{filename}', fontsize=20)
+        plt.ylabel('atv power ', fontsize=14)
+        plt.xlabel('index', fontsize=14)
         plt.legend(fontsize=12, loc='best')
         # 그래프를 저장
         plt.savefig(f'{self.path}/{filename}.png', dpi=300)

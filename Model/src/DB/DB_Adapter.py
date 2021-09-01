@@ -211,6 +211,10 @@ class DBAdapterQuery:
         result = query.filter_by(**filter_list)
         return result
 
+    def df_insert(self, df, table_name):
+        df.to_sql(name=table_name, con=self.engine,
+                  if_exists='fail', index=True, index_label='id',)
+
     def read_dataframe(self, query: session.query):
         """
         주워진 쿼리에 대해 pandas로 변환

@@ -4,7 +4,6 @@ from logging import getLogger
 
 import pandas
 from settings import siteId_list, TEST_TIME
-from src.Controller.ANN.ANN_Model import ANN_Sample_Model
 from src.Controller.API.adr_api_client import ADR_API_Client
 from src.DB.DB_Adapter import DBAdapter, DBAdapterQuery
 from src.DB.model.EquipInfo import equipments_info
@@ -19,7 +18,7 @@ class DataEngine:
         # DB 데이터 입출력
         self.api = ADR_API_Client()
         self.db = DBAdapterQuery(on_test=on_test)
-        self.ann = ANN_Sample_Model()
+        # self.ann = ANN_Sample_Model()
 
     def update_eqps(self):
         # 장비 데이터 업데이트 확인
@@ -247,7 +246,6 @@ class DataEngine:
         # print(f"second model : {tmp_ann}")
 
     def get_ann_data(self, eqps_info: equipments_info, before_days=7):
-        df_list = []
         # 데이터 가져오기
         search_time = datetime.now() - timedelta(days=before_days)
         base_query = self.db.select_query(power_info)
@@ -255,18 +253,7 @@ class DataEngine:
         base_query = base_query.filter_by(site_id=eqps_info.site_id, perf_id=eqps_info.perf_id)
         #
         base_query = base_query.filter(power_info.ymdms < search_time)
-        data_df = self.db.read_dataframe(base_query)
-        logger.debug(f"data_df: {data_df.info()}")
-
-        # 데이터 분리
-        x_dataset = data_df[['perf_id', 'ymdms', 'vol_tage', 'am_pere', 'ar_power', 'rat_power',
-                             'pw_factor', 'accrue_power', 'voltager_s', 'voltages_t', 'voltaget_r', 'temperature']]
-        y_dataset = data_df[['atv_power']]
-        # packing
-        result = {
-            "x_dataset": x_dataset,
-            "y_dataset": y_dataset,
-        }
+        result = self.db.read_dataframe(base_query)
         return result
 
     def get_ann_data_old(self, eqps_info: equipments_info, before_days=7):
@@ -298,3 +285,6 @@ class DataEngine:
             "y_dataset": y_dataset,
         }
         return result
+
+    def insert_predict(self, data):
+        self.db.df_insert(data)
