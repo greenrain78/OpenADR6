@@ -32,16 +32,16 @@ class PlanerScheduler:
             self.scheduler.create_job(self.test_engine.print_hello, "test hello 8", second=8)
         # 일단 실행
         self.data_engine.update_eqps()
-        self.data_engine.update_elec()
-        # self.data_engine.update_elec_remove_all()
+        # self.data_engine.update_elec()
+        self.data_engine.update_elec_remove_all()
         self.main_engine.test_run()
 
         if IS_RUN_SERVER:
             # eqps 업데이트
             self.scheduler.create_job(self.data_engine.update_eqps, hour=12)
             # elec 업데이트
-            # self.scheduler.create_job(self.data_engine.update_elec_remove_all, hour=12)
-            self.scheduler.create_job(self.data_engine.update_elec, hour=12)
+            self.scheduler.create_job(self.data_engine.update_elec_remove_all, hour=12)
+            # self.scheduler.create_job(self.data_engine.update_elec, hour=12)
 
             # 임시 예측 알고리즘
             self.scheduler.create_job(self.main_engine.test_run, hour=6)
