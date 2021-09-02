@@ -13,6 +13,9 @@ class predict_atv_power(models.Model):
     atv_power = models.FloatField()
 
     model_name = models.CharField(max_length=50)
+    predict_cycle = models.CharField(max_length=50)
+    predict_range = models.CharField(max_length=50)
+    predict_interval = models.CharField(max_length=50)
 
     created_at = models.DateTimeField(auto_now_add=True)  # 예측 수행 날짜
 

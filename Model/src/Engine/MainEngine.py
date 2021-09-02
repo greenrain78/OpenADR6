@@ -29,7 +29,7 @@ class MainEngine:
             print(f"MainEngine: eqps_obj({len(eqps_list) - i}): {eqps_obj}")
 
             # 데이터 검색 - 7일치
-            data = self.data_engine.get_ann_data(eqps_obj)
+            data = self.data_engine.get_ann_data(eqps_obj, before_days=2)
             result = self.temp_model.predict(data)
             print(result)
             self.data_engine.insert_predict("app_expect_predict_atv_power", result)

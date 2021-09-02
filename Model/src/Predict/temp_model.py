@@ -22,12 +22,21 @@ class TempModel(PredictBaseModel):
     def predict(self, input_data: pd.DataFrame):
         """
         """
+        # time_start = datetime.
+        y_predict = pd.DataFrame()
         # 예측 수행
-        y_predict = input_data[['site_id', 'perf_id', 'ymdms', 'atv_power']]
+        select_data = input_data[['site_id', 'perf_id', 'ymdms', 'atv_power']]
+
         # 모델 이름 추가
         y_predict.insert(3, "model_name", "TempModel")
+        y_predict.insert(3, "predict_cycle", "15 minute")
+        y_predict.insert(3, "predict_range", "24 hour")
+        y_predict.insert(3, "predict_interval", "15 minute")
+        # y_predict.loc['2019-06-1':'2020-02-05']
+
         y_predict.insert(3, "created_at", datetime.now())
-        y_predict['model_name'] = "TempModel"
+        print(y_predict)
+
         # 데이터 출력
         logger.debug("predict")
         return y_predict

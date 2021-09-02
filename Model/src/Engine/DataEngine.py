@@ -261,6 +261,17 @@ class DataEngine:
         result = self.db.read_dataframe(base_query)
         return result
 
+    def get_ann_data_after(self, eqps_info: equipments_info, after_days=7):
+        # 데이터 가져오기
+        search_time = datetime.now() + timedelta(days=after_days)
+        base_query = self.db.select_query(power_info)
+        # 해당 장비 데이터만 선별
+        base_query = base_query.filter_by(site_id=eqps_info.site_id, perf_id=eqps_info.perf_id)
+        #
+        base_query = base_query.filter(power_info.ymdms < search_time)
+        result = self.db.read_dataframe(base_query)
+        return result
+
     def get_ann_data_old(self, eqps_info: equipments_info, before_days=7):
         df_list = []
         # 데이터 가져오기
