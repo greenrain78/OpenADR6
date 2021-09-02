@@ -93,6 +93,7 @@ class py_log_settings(log_settings):
     def init(cls, debug: bool):
 
         # 디버그 모드시 로거 변경
+        # Todo dict를 복사하기 때문에 변경이 안됨 수정 필수
         if debug is True:
             handlers = cls.log_config.get("handlers")
             console_handler = handlers.get("console")
@@ -102,10 +103,10 @@ class py_log_settings(log_settings):
             root_loggers = loggers.get("")
             root_loggers["level"] = "DEBUG"
             root_loggers["handlers"] = ["console"]
-        else:
-            handlers = cls.log_config.get("handlers")
-            console_handler = handlers.get("console")
-            console_handler["handlers"] = "INFO"
+        # else:
+        #     handlers = cls.log_config.get("handlers")
+        #     console_handler = handlers.get("console")
+        #     console_handler["handlers"] = "INFO"
 
         cls.initialize(cls)
 
