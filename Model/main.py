@@ -48,5 +48,5 @@ if __name__ == '__main__':
     logger.info(f'main 설정 시간 {time.time() - start}')
     # 임시로
     while IS_MAIN_RUNNING:
-        logger.debug('프로그램 실행중')
-        sleep(10)
+        # logger.debug('프로그램 실행중')
+        sleep(100)
