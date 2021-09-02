@@ -289,5 +289,5 @@ class DataEngine:
         }
         return result
 
-    def insert_predict(self, data):
-        self.db.df_insert(data)
+    def insert_predict(self, table_name, data):
+        self.db.df_insert(df=data, table_name=table_name)

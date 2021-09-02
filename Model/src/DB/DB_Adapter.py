@@ -213,7 +213,7 @@ class DBAdapterQuery:
 
     def df_insert(self, df, table_name):
         df.to_sql(name=table_name, con=self.engine,
-                  if_exists='fail', index=True, index_label='id',)
+                  if_exists='append', index=False, index_label='id',)
 
     def read_dataframe(self, query: session.query):
         """

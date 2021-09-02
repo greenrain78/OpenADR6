@@ -9,6 +9,8 @@ from src.Engine.DataEngine import DataEngine
 import pandas
 import logging
 
+from src.Predict.temp_model import TempModel
+
 logger = logging.getLogger(__name__)
 
 
@@ -18,16 +20,19 @@ class MainEngine:
         # DB 데이터 입출력
         self.data_engine = data_engine
         self.chart_maker = ChartMaker()
+        self.temp_model = TempModel()
 
-    def dev_run(self):
-        # 일단 데이터 생성
-        # 장비 리스트 갱신
-        # self.data_engine.update_eqps()
-        # 장비 정보 업데이트
-        # 일주일치
-        self.data_engine.update_elec_remove_all()
+    def test_run(self):
+        eqps_list = self.data_engine.get_all_eqps()
+        for i, eqps_obj in enumerate(eqps_list):
+            print(f"MainEngine: eqps_obj({len(eqps_list) - i}): {eqps_obj}")
 
-        pass
+            # 데이터 검색 - 7일치
+            data = self.data_engine.get_ann_data(eqps_obj)
+            result = self.temp_model.predict(data)
+            print(result)
+            self.data_engine.insert_predict("app_expect_predict_atv_power", result)
+
 
     def ann_train_test(self):
         logger.info(f"run ann_train_test")

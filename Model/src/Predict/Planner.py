@@ -30,6 +30,7 @@ class PlanerScheduler:
         if IS_DEBUG:
             # 테스트를 위한 8초에 hello 출력
             self.scheduler.create_job(self.test_engine.print_hello, "test hello 8", second=8)
+            self.main_engine.test_run()
 
         if IS_RUN_SERVER:
             # eqps 업데이트
@@ -41,6 +42,7 @@ class PlanerScheduler:
     def run(self):
         self.scheduler.run()
         logger.info(f"PlanerScheduler 실행")
+
 
 def test_hello():
     # 안녕
