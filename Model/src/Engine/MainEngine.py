@@ -23,6 +23,7 @@ class MainEngine:
         self.temp_model = TempModel()
 
     def test_run(self):
+        logger.info(f"MainEngine test_run")
         eqps_list = self.data_engine.get_all_eqps()
         for i, eqps_obj in enumerate(eqps_list):
             print(f"MainEngine: eqps_obj({len(eqps_list) - i}): {eqps_obj}")
