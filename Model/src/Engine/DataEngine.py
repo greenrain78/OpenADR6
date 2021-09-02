@@ -151,13 +151,15 @@ class DataEngine:
                     # 데이터 추가
                     insert_list.append(data)
 
-            logger.info(f"elec 데이터 업데이트({day}) - 추가: {len(insert_list)}, 제거: {len(remove_list)}")
-            # DB 데이터 추가 및 제거
-            if remove_list:
-                self.db.delete(remove_list)
-            if insert_list:
-                self.db.insert_list(insert_list)
-            logger.info(f"api 정보 출력{self.api}")
+                logger.info(f"elec 데이터 업데이트({day}) - 추가: {len(insert_list)}, 제거: {len(remove_list)}")
+                # DB 데이터 추가 및 제거
+                if remove_list:
+                    self.db.delete(remove_list)
+                    remove_list.clear()
+                if insert_list:
+                    self.db.insert_list(insert_list)
+                    insert_list.clear()
+                logger.info(f"api 정보 출력{self.api}")
 
     def ann_run_test(self):
         # 날짜 설정
