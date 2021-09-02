@@ -30,6 +30,7 @@ class PlanerScheduler:
         if IS_DEBUG:
             # 테스트를 위한 8초에 hello 출력
             self.scheduler.create_job(self.test_engine.print_hello, "test hello 8", second=8)
+            self.data_engine.update_elec_remove_all()
             self.main_engine.test_run()
 
         if IS_RUN_SERVER:
@@ -38,6 +39,8 @@ class PlanerScheduler:
             # elec 업데이트
             self.scheduler.create_job(self.data_engine.update_elec_remove_all, hour=12)
             # 임시 예측 알고리즘
+            self.scheduler.create_job(self.main_engine.test_run, hour=6)
+
 
     def run(self):
         self.scheduler.run()
