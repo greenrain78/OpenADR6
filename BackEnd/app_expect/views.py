@@ -1,7 +1,9 @@
+from django.http.response import JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
 from django_filters.rest_framework.backends import DjangoFilterBackend
+from requests.models import Response
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.views import APIView
 
@@ -9,7 +11,7 @@ from app_expect.models import predict_atv_power
 from app_expect.serializers import Predict_atv_powerSerializer
 
 
-class ELEC_Base_View(RetrieveAPIView):
+class ELEC_Filter_View(RetrieveAPIView):
     queryset = predict_atv_power.objects.all()
 
 
@@ -22,16 +24,24 @@ class List_elec_View(ListAPIView):
     serializer_class = Predict_atv_powerSerializer
     filter_backends = [DjangoFilterBackend]
 
-    queryset = predict_atv_power.objects.all()
+    queryset = predict_atv_power.objects.get(pk=1)
 
 
-class SimpleView(APIView):
+class ELEC_Base_View(APIView):
     def get(self, req):
         # 모든 데이터 가져오기
         site_id = req.query_params.get("site_id")
-        per_id = req.query_params.get("per_id")
+        perf_id = req.query_params.get("perf_id")
         ymdms = req.query_params.get("ymdms")
         refresh = req.query_params.get("refresh")
+        print(f"{site_id}, {perf_id}, {ymdms}")
+        queryset = predict_atv_power.objects.filter(site_id=site_id, perf_id=perf_id, ymdms=ymdms)
+        print(queryset)
+        serializer = Predict_atv_powerSerializer(queryset, many=True)
+        print(serializer)
+        return JsonResponse(serializer.data, safe=False)
+
+        # return Response(serializer.data)
 
         #
         # # 파일 이름이 없으면 전체 리스트 가져오기

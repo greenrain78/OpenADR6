@@ -6,7 +6,7 @@ from time import sleep
 from settings import IS_MAIN_RUNNING, IS_DEBUG, IS_RUN_TEST
 from src.Controller.run_test_code import run_tests
 from src.Predict.Planner import PlanerScheduler
-from src.setting_logger import py_log_settings
+from src.Controller.setting_logger import py_log_settings
 
 # 로거 생성
 logger = logging.getLogger(__name__)
