@@ -1,3 +1,5 @@
+import datetime
+
 from django.http.response import JsonResponse
 from django.shortcuts import render
 
@@ -19,12 +21,18 @@ class List_elec_View(ListAPIView):
     """
     임시로 list 로 출력
     추후 필터 추가
+    아래는 임시 데이터
+     site_id='ace', perf_id=230, ymdms=20200818
     """
     model = predict_atv_power
     serializer_class = Predict_atv_powerSerializer
     filter_backends = [DjangoFilterBackend]
-
-    queryset = predict_atv_power.objects.get(pk=1)
+    queryset = predict_atv_power.objects.filter(
+        site_id='ace', perf_id=230,
+        ymdms__year=2020,
+        ymdms__month=8,
+        ymdms__day=18)
+    # queryset = predict_atv_power.objects.all()
 
 
 class ELEC_Base_View(APIView):
@@ -33,9 +41,15 @@ class ELEC_Base_View(APIView):
         site_id = req.query_params.get("site_id")
         perf_id = req.query_params.get("perf_id")
         ymdms = req.query_params.get("ymdms")
+        if ymdms:
+            ymdms = datetime.datetime.strptime(ymdms, '%Y%m%d')
         refresh = req.query_params.get("refresh")
-        print(f"{site_id}, {perf_id}, {ymdms}")
-        queryset = predict_atv_power.objects.filter(site_id=site_id, perf_id=perf_id, ymdms=ymdms)
+        print(f"{site_id}, {perf_id}, {ymdms}({ymdms.year}, {ymdms.month}, {ymdms.day})")
+        queryset = predict_atv_power.objects.filter(
+            site_id=site_id, perf_id=perf_id,
+            ymdms__year=ymdms.year,
+            ymdms__month=ymdms.month,
+            ymdms__day=ymdms.day)
         print(queryset)
         serializer = Predict_atv_powerSerializer(queryset, many=True)
         print(serializer)
