@@ -53,35 +53,35 @@ services:
       - db
       - db_test
 
-  frontend:
-    container_name: adr_front
-    build:
-      context: FrontEnd
-      dockerfile: Dockerfile
-    volumes:
-      - ./FrontEnd:/app
-      - /app/node_modules # 도커 컨테이너에서만 존재?
-    ports:
-      - "10400:3000"
-    environment:
-      - NODE_ENV=development
-    stdin_open: true
-    tty: true
-
-  frontend-dev:
-    container_name: adr_front_dev
-    build:
-      context: FrontEnd
-      dockerfile: Dockerfile
-    volumes:
-      - ./FrontEnd:/app
-      - /app/node_modules # 도커 컨테이너에서만 존재?
-    ports:
-      - "10410:3000"
-    environment:
-      - NODE_ENV=development
-    stdin_open: true
-    tty: true
+#  frontend:
+#    container_name: adr_front
+#    build:
+#      context: FrontEnd
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./FrontEnd:/app
+#      - /app/node_modules # 도커 컨테이너에서만 존재?
+#    ports:
+#      - "10400:3000"
+#    environment:
+#      - NODE_ENV=development
+#    stdin_open: true
+#    tty: true
+#
+#  frontend-dev:
+#    container_name: adr_front_dev
+#    build:
+#      context: FrontEnd
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./FrontEnd:/app
+#      - /app/node_modules # 도커 컨테이너에서만 존재?
+#    ports:
+#      - "10410:3000"
+#    environment:
+#      - NODE_ENV=development
+#    stdin_open: true
+#    tty: true
 
   model:
     container_name: adr_model
