@@ -31,6 +31,7 @@ class PlanerScheduler:
             # 테스트를 위한 8초에 hello 출력
             self.scheduler.create_job(self.test_engine.print_hello, "test hello 8", second=8)
         # 일단 실행
+        self.data_engine.update_eqps()
         self.data_engine.update_elec_remove_all()
         self.main_engine.test_run()
 
